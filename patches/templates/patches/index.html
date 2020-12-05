@@ -1,0 +1,8 @@
+{% if patch_entries %}
+    {% for entry in patch_entries %}
+    	{% include "patches/entry.html" with entry=entry %}
+	<hr/>
+    {% endfor %}
+{% else %}
+Nothing
+{% endif %}
