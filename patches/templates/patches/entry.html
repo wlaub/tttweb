@@ -2,12 +2,15 @@
 <a href = {% url 'patches:detail' entry.id %}>{{entry.date}}</a><br>
 {% if entry.authors.all%}
 {% for author in entry.authors.all %}
-{{author.author.display_name}} 
+<a href = "">{{author.author.display_name}}</a>
 {% endfor %}
 {% else %}
 No Authors
 {% endif %}
 <br>
 <audio controls src="{{entry.recording.url}}"  ></audio><br>
-
+Tags: {% for tag in entry.tags.all %}
+<a href = "">{{tag.name}}</a> |
+{% endfor %}
+<br>
 Description: {{entry.desc}}<br>
