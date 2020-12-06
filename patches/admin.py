@@ -29,4 +29,4 @@ class PatchAdmin(admin.ModelAdmin):
     inlines = [AuthorInline, ImageInline, TagInline, RepoInline, AttachmentInline]
 
 admin.site.register(PatchEntry, PatchAdmin)
-
+admin.site.register(models.PatchAuthorName)
