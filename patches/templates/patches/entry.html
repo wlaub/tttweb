@@ -1,2 +1,3 @@
-Name: {{entry.name}} | <a href = {% url 'patches:entry' entry.id %}>Date: {{entry.date}}</a><br>
+Name: {{entry.name}} | <a href = {% url 'patches:detail' entry.id %}>Date: {{entry.date}}</a><br>
+<audio controls src="{{entry.recording.url}}"  ></audio><br>
 Description: {{entry.desc}}<br>
