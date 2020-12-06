@@ -1,0 +1,12 @@
+.entry {
+	border: 1px black;
+	border-style: solid none solid none;
+}
+.entry-top{
+	position:relative;
+	display:flex;
+	flex-direction:row;
+}
+.thumbnail {
+	height: 100%;
+}
