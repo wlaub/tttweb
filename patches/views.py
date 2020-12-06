@@ -1,15 +1,17 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from django.views import generic
 
 from .models import PatchEntry
 
-def index(request):
-    patch_entries = PatchEntry.objects.order_by('-date')
-    context = {'patch_entries': patch_entries}
-    return render(request, 'patches/index.html', context)
+class IndexView(generic.ListView):
+    template_name = 'patches/index.html'
+    context_object_name = 'patch_entries'
 
-def entry(request, patch_id):
-    entry = get_object_or_404(PatchEntry, pk=patch_id)
-    context = {'entry': entry}
-    return render(request, 'patches/entry.html', context)
+    def get_queryset(self):
+        return PatchEntry.objects.order_by('-date')
+
+class DetailView(generic.DetailView):
+    model = PatchEntry
+    template_name = 'patches/detail.html'
 

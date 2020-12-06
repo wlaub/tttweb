@@ -4,7 +4,7 @@ from . import views
 
 app_name = 'patches'
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('<int:patch_id>/', views.entry, name='entry')
+    path('', views.IndexView.as_view(), name='index'),
+    path('<int:pk>/', views.DetailView.as_view(), name='detail')
 ]
 
