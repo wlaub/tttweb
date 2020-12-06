@@ -11,6 +11,9 @@ class PatchEntry(models.Model):
     date = models.DateTimeField()
     desc = models.TextField()
 
+    def __str__(self):
+        return f'Patch Recording - {self.name}'
+
 class PatchAttachments(models.Model):
     """
     Generic files attached to an entry, 0 or more
