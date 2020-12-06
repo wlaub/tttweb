@@ -22,8 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
+from .secret_configs import *
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'qwv132n^v33nhf4azgu^=a@l*z6z&qq4g7f7-f3ukz=^#qkd*x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,10 +32,6 @@ ALLOWED_HOSTS = ['secret.techtechtechnologies.com','www.secret.techtechtechnolog
 
 
 # Application definition
-
-
-
-
 
 ROOT_URLCONF = 'tttweb.urls'
 
@@ -176,26 +172,6 @@ CMS_TEMPLATES = (
 CMS_PERMISSION = True
 
 CMS_PLACEHOLDER_CONF = {}
-
-DATABASES = {
-     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ttt_secretdb',
-        'USER': 'idiort',
-        'PASSWORD': 'qu3stions',
-        'HOST': 'secretdb.secret.techtechtechnologies.com',
-        'PORT': '3306',
-    },
-    'defaultX': {
-        'CONN_MAX_AGE': 0,
-        'ENGINE': 'django.db.backends.sqlite3',
-        'HOST': 'localhost',
-        'NAME': 'project.db',
-        'PASSWORD': '',
-        'PORT': '',
-        'USER': ''
-    }
-}
 
 MIGRATION_MODULES = {
     
