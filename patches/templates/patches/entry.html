@@ -14,3 +14,12 @@ Tags: {% for tag in entry.tags.all %}
 {% endfor %}
 <br>
 Description: {{entry.desc}}<br>
+
+{% if entry.attachments.all%}
+{% for attach in entry.attachments.all %}
+File: <a href="{{attach.file.url}}"> {{attach.filename}} </a><br>
+{% endfor %}
+{% else %}
+No Attachements
+{% endif %}
+

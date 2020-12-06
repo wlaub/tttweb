@@ -1,4 +1,5 @@
 from django.db import models
+import os
 
 from django.contrib.auth.models import User
 
@@ -7,7 +8,7 @@ from django.contrib.auth.models import User
 
 class PatchEntry(models.Model):
     name = models.TextField()
-    recording = models.FileField('recordings/')
+    recording = models.FileField(upload_to='patches/recordings/')
     date = models.DateTimeField()
     desc = models.TextField()
 
@@ -19,14 +20,16 @@ class PatchAttachments(models.Model):
     Generic files attached to an entry, 0 or more
     """
     entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name = 'attachments')
-    file = models.FileField('attachements/')
+    file = models.FileField(upload_to='patches/attachements/')
+    def filename(self):
+        return os.path.basename(self.file.name)
 
 class PatchImages(models.Model):
     """
     Images attached to an entry, 1 or more
     """
     entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField('images/')
+    image = models.ImageField(upload_to='patches/images/')
 
 class PatchTag(models.Model):
     """
