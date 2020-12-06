@@ -1,2 +1,6 @@
-    	{% include "patches/entry.html" with entry=patchentry %}
+{% extends "base.html" %}
+Detail
+{% block body %}
+{% include "patches/entry.html" with entry=patchentry %}
+{% endblock %}
 	
