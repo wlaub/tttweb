@@ -1,8 +1,13 @@
-Name: {{entry.name}} |
-<a href = {% url 'patches:detail' entry.id %}>Date: {{entry.date}}</a><br>
-{% for author in entry.authors %}
-{{author.user}}
+{{entry.name}} |
+<a href = {% url 'patches:detail' entry.id %}>{{entry.date}}</a><br>
+{% if entry.authors.all%}
+{% for author in entry.authors.all %}
+{{author.author.display_name}} 
 {% endfor %}
+{% else %}
+No Authors
+{% endif %}
+<br>
 <audio controls src="{{entry.recording.url}}"  ></audio><br>
 
 Description: {{entry.desc}}<br>

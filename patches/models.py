@@ -35,12 +35,20 @@ class PatchTag(models.Model):
     entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name='tags')
     name = models.TextField()
 
+class PatchAuthorName(models.Model):
+    display_name = models.TextField()
+    user = models.ForeignKey(User, on_delete = models.CASCADE, related_name='display_name')
+
+    def __str__(self):
+        return f'{self.display_name} AKA {self.user.username}'
+
+
 class PatchAuthor(models.Model):
     """
     Authors associated with an entry, 1 or more
     """
     entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name='authors')
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    author= models.ForeignKey(PatchAuthorName, on_delete = models.CASCADE)
 
 class PatchRepoAttachment(models.Model):
     """
