@@ -20,5 +20,15 @@
     {% block body %}
     {% endblock %}
 
+    <script>
+    for (element of document.querySelectorAll("a"))
+    {
+        element.addEventListener("click", function(e) {
+            console.log("hello there");
+            e.stopPropagation();
+        });
+    }
+   </script>
+
 </body>
 </html>
