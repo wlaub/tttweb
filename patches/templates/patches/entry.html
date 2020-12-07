@@ -25,9 +25,13 @@
         <br>
  
 
+        {% if entry.tags.all %}
         Tags: {% for tag in entry.tags.all %}
         <a href = "{{request.path}}?tag={{tag.name}}">{{tag.name}}</a> |
         {% endfor %}
+        {% else %}
+        No Tags
+        {% endif %}
         <br>
 
 
@@ -40,7 +44,7 @@
         <p>
         {{entry.desc}}
         </p>
-        <p>
+
         <h3>Attachments</h3>
         <ul>
         {% if entry.attachments.all%}
@@ -52,7 +56,21 @@
             No Attachments
         {% endif %}
         </ul>
-        </p>
+
+        <h3>Associated Repositories</h3>
+        <ul>
+        {% if entry.repo_attachments.all%}
+
+            {% for attach in entry.repo_attachments.all %}
+            <li>{{attach.filename}}<br></li>
+            {% endfor %}
+        {% else %}
+            No Associated Repositories
+        {% endif %}
+        </ul>
+
+
+
         </div>
     </div>
 
