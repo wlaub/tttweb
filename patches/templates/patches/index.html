@@ -1,6 +1,7 @@
 {% extends "patches/base.html" %}
 
 {% block body %}
+<div class="container">
 
 {% if patch_entries %}
     {% for entry in patch_entries %}
@@ -9,5 +10,6 @@
 {% else %}
 Nothing
 {% endif %}
+</div>
 
 {% endblock %}
