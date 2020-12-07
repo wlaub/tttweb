@@ -9,10 +9,16 @@
         </div>
 
         <div class = "col">
+            <div class = "row">
             <h3>
-        {{entry.name}} |
-        <a href = {% url 'patches:detail' entry.id %}>{{entry.date}}</a><br>
+                 <a href = {% url 'patches:detail' entry.id %}>               
+                {{entry.name}}
+                </a>
+            <h3>
+            <h3 class = "entry-date">
+                {{entry.date}}
             </h3>
+            </div>
         <audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
 
         {% if entry.authors.all%}
