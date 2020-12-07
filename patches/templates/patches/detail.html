@@ -1,5 +1,10 @@
-{% extends "base.html" %}
-Detail
+{% extends "patches/base.html" %}
+{% block title %}
+Audio File: {{patchentry.name}}
+{% endblock %}
+
+
+
 {% block body %}
 
 {% include "patches/entry.html" with entry=patchentry %}
