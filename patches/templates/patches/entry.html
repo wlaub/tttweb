@@ -9,35 +9,51 @@
         </div>
 
         <div class = "col">
+            <h3>
         {{entry.name}} |
         <a href = {% url 'patches:detail' entry.id %}>{{entry.date}}</a><br>
+            </h3>
+        <audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
+
         {% if entry.authors.all%}
         {% for author in entry.authors.all %}
-        <a href = "">{{author.author.display_name}}</a>
+        <a href = "{{request.path}}?author={{author.author.display_name}}">{{author.author.display_name}}</a>
         {% endfor %}
         {% else %}
         No Authors
         {% endif %}
         <br>
-        <audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
+ 
+
         Tags: {% for tag in entry.tags.all %}
-        <a href = "">{{tag.name}}</a> |
+        <a href = "{{request.path}}?tag={{tag.name}}">{{tag.name}}</a> |
         {% endfor %}
         <br>
+
+
         </div>
     </div>
 
     <div class = "row">
-        Description: {{entry.desc}}<br>
-
-        Attachments:<br>
+        <div class = "col">
+        <h3> Description </h3>
+        <p>
+        {{entry.desc}}
+        </p>
+        <p>
+        <h3>Attachments</h3>
+        <ul>
         {% if entry.attachments.all%}
-        {% for attach in entry.attachments.all %}
-        <a href="{{attach.file.url}}"> {{attach.filename}} </a><br>
-        {% endfor %}
+
+            {% for attach in entry.attachments.all %}
+            <li><a href="{{attach.file.url}}"> {{attach.filename}} </a><br></li>
+            {% endfor %}
         {% else %}
-        No Attachements
+            No Attachments
         {% endif %}
+        </ul>
+        </p>
+        </div>
     </div>
 
 </div>
