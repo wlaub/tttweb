@@ -2,15 +2,17 @@
 
 {% block body %}
 <div class="container entry-list">
-<h1>Audio Files</h1>
+    <div class="col-auto">
+        <h1>Audio Files</h1>
+    </div>
 
-{% if patch_entries %}
-    {% for entry in patch_entries %}
-    	{% include "patches/entry.html" with entry=entry %}
-    {% endfor %}
-{% else %}
-Nothing
-{% endif %}
+    {% if patch_entries %}
+        {% for entry in patch_entries %}
+            {% include "patches/entry.html" with entry=entry %}
+        {% endfor %}
+    {% else %}
+    Nothing
+    {% endif %}
 </div>
 
 {% endblock %}
