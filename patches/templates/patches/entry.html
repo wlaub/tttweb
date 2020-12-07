@@ -1,12 +1,14 @@
 
-<div class="container entry">
+<div class="container-fluid entry">
 
     <div class="row">
-        <div class = "col-sm-4">
-        <img src = "{{entry.images.all.first.image.url}}" class="thumbnail">
+        <div class = "col-auto">
+        <a href = "{{entry.images.all.first.image.url}}">
+            <img src = "{{entry.images.all.first.image.url}}" class="thumbnail">
+        </a>
         </div>
 
-        <div class = "col-sm-4">
+        <div class = "col">
         {{entry.name}} |
         <a href = {% url 'patches:detail' entry.id %}>{{entry.date}}</a><br>
         {% if entry.authors.all%}

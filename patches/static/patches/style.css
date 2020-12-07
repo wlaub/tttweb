@@ -8,5 +8,8 @@
 	flex-direction:row;
 }
 .thumbnail {
-	height: 100px;
+	height: 128px;
+	width: 128px;
+	object-fit:cover;
+	vertical-align:middle;
 }
