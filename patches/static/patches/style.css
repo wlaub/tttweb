@@ -10,6 +10,9 @@
 	padding-top: 10px;
 	padding-bottom:10px;
 }
+.entry:hover {
+	background-color: #cccccc;
+}
 .entry-top{
 	position:relative;
 	display:flex;

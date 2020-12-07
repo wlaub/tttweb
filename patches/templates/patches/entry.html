@@ -1,5 +1,5 @@
 
-<div class="container-fluid entry">
+<div class="container-fluid entry accordion" id="accordion-{{entry.id}}" data-toggle="collapse" data-target="#collapse-{{entry.id}}">
 
     <div class="row">
         <div class = "col-auto">
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <div class = "row">
+    <div class = "row collapse" id = "collapse-{{entry.id}}">
         <div class = "col">
         <h3> Description </h3>
         <p>
