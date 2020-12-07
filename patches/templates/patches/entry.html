@@ -1,40 +1,41 @@
 
-<div class="entry">
+<div class="container entry">
 
-<div class="entry-top">
-<div>
-<img src = "{{entry.images.all.first.image.url}}" class="thumbnail">
-</div>
-<div>
-{{entry.name}} |
-<a href = {% url 'patches:detail' entry.id %}>{{entry.date}}</a><br>
-{% if entry.authors.all%}
-{% for author in entry.authors.all %}
-<a href = "">{{author.author.display_name}}</a>
-{% endfor %}
-{% else %}
-No Authors
-{% endif %}
-<br>
-<audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
-Tags: {% for tag in entry.tags.all %}
-<a href = "">{{tag.name}}</a> |
-{% endfor %}
-<br>
-</div>
+    <div class="row">
+        <div class = "col-sm-4">
+        <img src = "{{entry.images.all.first.image.url}}" class="thumbnail">
+        </div>
 
-</div>
-<div>
-Description: {{entry.desc}}<br>
+        <div class = "col-sm-4">
+        {{entry.name}} |
+        <a href = {% url 'patches:detail' entry.id %}>{{entry.date}}</a><br>
+        {% if entry.authors.all%}
+        {% for author in entry.authors.all %}
+        <a href = "">{{author.author.display_name}}</a>
+        {% endfor %}
+        {% else %}
+        No Authors
+        {% endif %}
+        <br>
+        <audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
+        Tags: {% for tag in entry.tags.all %}
+        <a href = "">{{tag.name}}</a> |
+        {% endfor %}
+        <br>
+        </div>
+    </div>
 
-Attachments:<br>
-{% if entry.attachments.all%}
-{% for attach in entry.attachments.all %}
-<a href="{{attach.file.url}}"> {{attach.filename}} </a><br>
-{% endfor %}
-{% else %}
-No Attachements
-{% endif %}
-</div>
+    <div class = "row">
+        Description: {{entry.desc}}<br>
+
+        Attachments:<br>
+        {% if entry.attachments.all%}
+        {% for attach in entry.attachments.all %}
+        <a href="{{attach.file.url}}"> {{attach.filename}} </a><br>
+        {% endfor %}
+        {% else %}
+        No Attachements
+        {% endif %}
+    </div>
 
 </div>
