@@ -17,6 +17,11 @@
 .entry:hover {
 	background-color: #cccccc;
 }
+.entry-date {
+	font-size: 0.75rem;
+	padding-top: 1rem;
+	padding-left: 0.5em;
+}
 .entry-top{
 	position:relative;
 	display:flex;
