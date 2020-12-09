@@ -12,7 +12,7 @@ Audio Files
 
     {% if patch_entries %}
         {% for entry in patch_entries %}
-            {% include "patches/entry.html" with entry=entry %}
+            {% include "patches/entry.html" with entry=entry collapse=True %}
         {% endfor %}
     {% else %}
     Nothing

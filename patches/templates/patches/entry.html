@@ -1,5 +1,5 @@
 
-<div class="container-fluid entry accordion" id="accordion-{{entry.id}}" data-toggle="collapse" data-target="#collapse-{{entry.id}}">
+<div class="container-fluid entry accordion" id="accordion-{{entry.id}}" {% if collapse %}data-toggle="collapse" data-target="#collapse-{{entry.id}}" {%endif%}>
 
     <div class="row">
         <div class = "col-auto">
@@ -9,7 +9,7 @@
                 <div class = "carousel-inner">
 
                     {% for image in entry.images.all %}
-                    <div class = "carousel-item{% if forloop.first%} active{% endif %}">
+                    <div class = "carousel-item{% if forloop.first%} active{% endif %}" style="max-width:128px">
                         <a href = "{{image.image.url}}">
                             <img src = "{{image.image.url}}" class="thumbnail">
                         </a>
@@ -74,7 +74,7 @@
         </div>
     </div>
 
-    <div class = "row collapse" id = "collapse-{{entry.id}}">
+    <div class = "row {% if collapse %}collapse{%endif%}" id = "collapse-{{entry.id}}">
         <div class = "col">
         <h3> Description </h3>
         <p>
