@@ -40,11 +40,15 @@ class PatchTag(models.Model):
 
 class PatchAuthorName(models.Model):
     display_name = models.TextField()
+    author_image = models.ImageField(null=True)
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name='display_name')
 
     def __str__(self):
         return f'{self.display_name} AKA {self.user.username}'
 
+class AuthorLink(models.Model):
+    author = models.ForeignKey(PatchAuthorName, on_delete=models.CASCADE, related_name = 'links')
+    url = models.URLField()
 
 class PatchAuthor(models.Model):
     """
@@ -61,4 +65,5 @@ class PatchRepoAttachment(models.Model):
     repo = models.URLField()
     commit = models.TextField()
     filename = models.TextField()
+
 
