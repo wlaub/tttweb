@@ -33,8 +33,14 @@
 	object-fit:cover;
 	vertical-align:middle;
 }
+.author-thumbnail {
+	height: 256px;
+	width:256px;
+	object-fit:cover;
+}
 .author-info {
-	padding-bottom: 20px;
+	padding-left: 15px;
+	padding-bottom: 15px;
 }
 .home-link {
 	color:inherit;
