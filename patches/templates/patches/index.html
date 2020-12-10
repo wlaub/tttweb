@@ -7,12 +7,30 @@ Audio Files
 {% block body %}
 <div class="container entry-list">
     <div class="col-auto entry-header">
-        <h1><a href = "{{request.path}}">Audio Files</a></h1>
+        <h1><a href = "{{request.path}}" class="home-link">Audio Files</a></h1>
         {% if author %}
-            <h2>{{author.author.display_name}}</h2>
-            <h3>External Links</h3>
-            <ul>
-            </ul>
+            <div class = "row author-info" >
+
+                <div>
+                {% if author.author.author_image %}
+                <img src="{{author.author.author_image.url}}" width=256 />
+                {% endif %}
+                </div>
+
+                <div>
+                <h2>{{author.author.display_name}}</h2>
+                <h3>External Links</h3>
+                {% if author.author.links %}
+                <ul>
+                    {% for link in author.author.links.all %}
+                    <li>
+                        <a href="{{link.url}}">{{link.url}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                </div>
+            </div>
         {% endif %}
 
     </div>

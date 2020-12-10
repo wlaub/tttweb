@@ -28,5 +28,15 @@ class PatchAdmin(admin.ModelAdmin):
         ]
     inlines = [AuthorInline, ImageInline, TagInline, RepoInline, AttachmentInline]
 
+class LinkInline(admin.StackedInline):
+    model = models.AuthorLink
+    extra = 1
+
+class PatchAuthorNameAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['display_name', 'author_image', 'user']})
+        ]
+    inlines = [LinkInline]
+
 admin.site.register(PatchEntry, PatchAdmin)
-admin.site.register(models.PatchAuthorName)
+admin.site.register(models.PatchAuthorName, PatchAuthorNameAdmin)

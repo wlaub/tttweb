@@ -33,3 +33,14 @@
 	object-fit:cover;
 	vertical-align:middle;
 }
+.author-info {
+	padding-bottom: 20px;
+}
+.home-link {
+	color:inherit;
+}
+.home-link:hover{
+	text-decoration:none;
+	color:inherit;
+}
+
