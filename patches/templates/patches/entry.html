@@ -4,37 +4,10 @@
     <div class="row">
         <div class = "col-auto">
 
-            <div class = "carousel slide carousel-fade" id="carousel-entry-{{entry.id}}" data-ride="carousel">
-
-                <div class = "carousel-inner">
-
-                    {% for image in entry.images.all %}
-                    <div class = "carousel-item{% if forloop.first%} active{% endif %}" style="max-width:128px">
-                        <a href = "{{image.image.url}}">
-                            <img src = "{{image.image.url}}" class="thumbnail">
-                        </a>
-                    </div>
-                    {% endfor %}
-                    <!--
         <a href = "{{entry.images.all.first.image.url}}">
             <img src = "{{entry.images.all.first.image.url}}" class="thumbnail">
             </a>
-            -->
-
-                </div>
-
-                <a class="carousel-control-prev" href="#carousel-entry-{{entry.id}}" data-slide="prev" role="button">
-                    <span class="carousel-control-prev-icon"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carousel-entry-{{entry.id}}" data-slide="next" role="button">
-                    <span class="carousel-control-next-icon"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-
-
-
-            </div>
+            
 
         </div>
 
@@ -80,6 +53,14 @@
         <p>
         {{entry.desc}}
         </p>
+
+        <h3> Images </h3>
+        {% for image in entry.images.all %}
+            <a href = "{{image.image.url}}">
+                <img src = "{{image.image.url}}" class="thumbnail">
+            </a>
+        {% endfor %}
+
 
         <h3>Attachments</h3>
         <ul>
