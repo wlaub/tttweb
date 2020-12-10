@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import generic
 
-from .models import PatchEntry
+from .models import PatchEntry, PatchAuthor
 
 class IndexView(generic.ListView):
     template_name = 'patches/index.html'
@@ -10,13 +10,25 @@ class IndexView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
+        author = self.request.GET.get('author', False)
+        try:
+            user = PatchAuthor.objects.get(author__display_name=author)
+            context['author'] = user
+        except:
+            pass
+
         return context
 
     def get_queryset(self):
         q = PatchEntry.objects.order_by('-date')
+        print()
         print(self.kwargs)
-        if 'tag' in self.kwargs:
-            q = q.filter(tags__icontains=self.kwargs['tag'])
+
+        print()
+        author = self.request.GET.get('author', False)
+        if author:
+            q = q.filter(authors__author__display_name=author)
+
         return q
 
 class DetailView(generic.DetailView):

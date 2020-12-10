@@ -7,7 +7,14 @@ Audio Files
 {% block body %}
 <div class="container entry-list">
     <div class="col-auto entry-header">
-        <h1>Audio Files</h1>
+        <h1><a href = "{{request.path}}">Audio Files</a></h1>
+        {% if author %}
+            <h2>{{author.author.display_name}}</h2>
+            <h3>External Links</h3>
+            <ul>
+            </ul>
+        {% endif %}
+
     </div>
 
     {% if patch_entries %}
