@@ -2,14 +2,14 @@
 <div class="container-fluid entry accordion" id="accordion-{{entry.id}}" {% if collapse %}data-toggle="collapse" data-target="#collapse-{{entry.id}}" {%endif%}>
 
     <div class="row">
-        <div class = "col-auto">
+        <!-- div class = "col-auto" -->
 
         <a href = "{{entry.images.all.first.image.url}}">
-            <img src = "{{entry.images.all.first.image.url}}" class="thumbnail">
+            <img src = "{{entry.images.all.first.image.url}}" class="adaptive-thumbnail">
             </a>
             
 
-        </div>
+        <!--/div-->
 
         <div class = "col">
             <div class = "row">
