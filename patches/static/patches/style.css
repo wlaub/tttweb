@@ -33,6 +33,14 @@
 	object-fit:cover;
 	vertical-align:middle;
 }
+.adaptive-thumbnail {
+	margin-left:10px;
+	margin-right:10px;
+	height: 100%;
+	width: 150px;
+	object-fit:cover;
+	vertical-align:middle;
+}
 .author-thumbnail {
 	height: 256px;
 	width:256px;
