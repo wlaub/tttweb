@@ -19,7 +19,7 @@
                 </a>
             <h3>
             <h3 class = "entry-date">
-                {{entry.date}}, {{entry.date|timesince}} ago
+                {{entry.date}} &#xff5c; {{entry.date|timesince}} ago
             </h3>
             </div>
         <audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
@@ -36,7 +36,7 @@
 
         {% if entry.tags.all %}
         Tags: {% for tag in entry.tags.all %}
-        <a href = "{{request.path}}?tag={{tag.name}}">{{tag.name}}</a> |
+        <a href = "{{request.path}}?tag={{tag.name}}">{{tag.name}}</a> {% if not forloop.last%}&#xff5c;{% endif %}
         {% endfor %}
         {% else %}
         No Tags
