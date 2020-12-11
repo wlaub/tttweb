@@ -36,7 +36,7 @@
 .adaptive-thumbnail {
 	margin-left:10px;
 	margin-right:10px;
-	min-height:100px;
+	min-height:128px;
 	height: 100%;
 	width: 150px;
 	object-fit:cover;
