@@ -28,7 +28,7 @@ from .secret_configs import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['secret.techtechtechnologies.com','www.secret.techtechtechnologies.com', '127.0.0.1']
+ALLOWED_HOSTS = ['secret.techtechtechnologies.com','www.secret.techtechtechnologies.com', '127.0.0.1', '192.168.1.240']
 
 
 # Application definition
