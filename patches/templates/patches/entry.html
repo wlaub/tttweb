@@ -19,7 +19,7 @@
                 </a>
             <h3>
             <h3 class = "entry-date">
-                {{entry.date}}
+                {{entry.date}}, {{entry.date|timesince}} ago
             </h3>
             </div>
         <audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
