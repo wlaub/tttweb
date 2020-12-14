@@ -16,18 +16,26 @@ class IndexView(generic.ListView):
             context['author'] = user
         except:
             pass
+        tags = self.request.GET.get('tags', False)
+        if tags:
+            context['taglist'] = tags.split(',')
+        else:
+            context['taglist'] = []
+        context['tags'] = tags
 
         return context
 
     def get_queryset(self):
         q = PatchEntry.objects.order_by('-date')
-        print()
-        print(self.kwargs)
 
-        print()
         author = self.request.GET.get('author', False)
         if author:
             q = q.filter(authors__author__display_name=author)
+        tags = self.request.GET.get('tags', False)
+        if tags:
+            taglist = tags.split(',')
+            for tag in taglist:
+                q = q.filter(tags__name=tag)
 
         return q
 
