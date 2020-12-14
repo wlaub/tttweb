@@ -1,13 +1,13 @@
 {% extends "patches/base.html" %}
 
 {% block title %}
-Audio Files
+Recording Comparison
 {% endblock %}
 
 {% block body %}
 <div class="container entry-list">
     <div class="col-auto entry-header">
-        {% include "patches/header.html" with choice="index" %}
+        {% include "patches/header.html" with choice="compare" %}
         {% if author %}
             <div class = "row author-info" >
 
@@ -40,7 +40,7 @@ Audio Files
             {% include "patches/entry.html" with entry=entry collapse=True %}
         {% endfor %}
     {% else %}
-    Nothing
+    Not yet implemented
     {% endif %}
 </div>
 

@@ -43,3 +43,11 @@ class DetailView(generic.DetailView):
     model = PatchEntry
     template_name = 'patches/detail.html'
 
+class CompareView(generic.ListView):
+    model = PatchEntry
+    template_name = 'patches/compare.html'
+
+    def get_quesyset(self):
+        return None
+    
+
