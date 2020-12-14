@@ -26,7 +26,7 @@
 
         {% if entry.authors.all%}
         {% for author in entry.authors.all %}
-        <a href = "{{request.path}}?author={{author.author.display_name}}">{{author.author.display_name}}</a>
+        <a href = "{{request.path}}?author={{author.author.display_name}}{%if tags%}&tags={{tags}}{%endif%}">{{author.author.display_name}}</a>
         {% endfor %}
         {% else %}
         No Authors
@@ -36,7 +36,12 @@
 
         {% if entry.tags.all %}
         Tags: {% for tag in entry.tags.all %}
-        <a href = "{{request.path}}?tag={{tag.name}}">{{tag.name}}</a> {% if not forloop.last%}&#xff5c;{% endif %}
+        {%if not tag.name in taglist %}
+        <a href = "{{request.path}}?{%if author%}author={{author.author.display_name}}{%endif%}tags={%if tags%}{{tags}},{%endif%}{{tag.name}}">
+            {%endif%}
+            {{tag.name}}
+        </a>
+        {% if not forloop.last%}&#xff5c;{% endif %}
         {% endfor %}
         {% else %}
         No Tags
