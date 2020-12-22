@@ -35,9 +35,6 @@ ALLOWED_HOSTS = ['secret.techtechtechnologies.com','www.secret.techtechtechnolog
 
 ROOT_URLCONF = 'tttweb.urls'
 
-
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -65,6 +62,7 @@ STATICFILES_DIRS = (
 )
 SITE_ID = 1
 
+X_FRAME_OPTIONS="SAMEORIGIN"
 
 TEMPLATES = [
     {
