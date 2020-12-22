@@ -5,113 +5,114 @@
         <title>{% block title %}This is my new project home page{% endblock title %}</title>
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <style type="text/css">
-	    @font-face{
-		font-family: "CMU";
-		src: url({% static 'cmunrm.otf' %}) format('opentype');
-	    }
-            .nav {
-                padding-left: 0;
-            }
-            .nav li {
-                display: block;
-                list-style-type: none;
-                padding-right: 0px;
-            }
-	    .nav ul{
+        @font-face{
+            font-family: "CMU";
+            src: url({% static 'cmunrm.otf' %}) format('opentype');
+        }
+        .nav {
+            padding-left: 0;
+        }
+        .nav li {
+            display: block;
+            list-style-type: none;
+            padding-right: 0px;
+        }
+        .nav ul{
             padding-left:1em;
             }
-	    .nav a:link{
-		    color: white;
-		    text-decoration:none;
-			border-bottom: 1px solid white;
+        .nav a:link{
+            color: white;
+            text-decoration:none;
+            border-bottom: 1px solid white;
             border-left: 1px solid white;
             padding-left: 2px;
             margin-right: 1em;
-		}
-	    .nav a:visited{color: white;}    
-	    .child.selected a:link{color: #00ff00;}
-	    .child.selected a:visited{color:#00ff00;}    
- 	    .child.descendant a:link{color: white;}
-	    .child.descendant a:visited{color:white;}    
-            .content {
-                float: left;
-                width: 80%;
-            }
-            .sidebar {
-                float: left;
-                width: 20%;
-            }
- 
+        }
+        .nav a:visited{color: white;}    
+        .child.selected a:link{color: #00ff00;}
+        .child.selected a:visited{color:#00ff00;}    
+        .child.descendant a:link{color: white;}
+        .child.descendant a:visited{color:white;}
 
-	    .grid-container { 
-		display:grid;
-		grid-template-columns: auto 1fr;
-		grid-template-rows: auto 1fr;
-		grid-template-column-gap:2px;
-		justify-items: stretch;
-		align-content:stretch;
-		height:100vh;
-		grid-template-areas:
-			"sidebar header"
-			"sidebar content"	    
-	    }
-	    .header{
-		grid-area: header; display:grid;
-		padding-left: 10px;
-		font-family: CMU;
-	    }
-	    .header a{text-decoration:none; color: black;}
-	    .header h1 {
-		margin-top: 0px;
-		margin-bottom: 0px;
-		font-size: 72px;
-		font-weight: normal;
-	    }
-	    .header h2 {
-		margin-top: 0px;
-		margin-bottom: 0px;
-		margin-left: 2em;
-		font-size: 36px;
-		font-weight: normal;
-	    }
-	    
-	    .container {
-		grid-area: content;
-		display:grid;
-		padding-left:10px;
-		border-top-style:solid;
-            }
-           .sidebar-main {
-		grid-area: sidebar;
-		display:grid;
-		padding-left: 10px;
-		background-color: black;
-            }
-	   body{
-		margin: 0px;
-	   }
+        .content {
+            float: left;
+            width: 80%;
+        }
+        .sidebar {
+            float: left;
+            width: 20%;
+        }
+
+        .grid-container { 
+            display:grid;
+            grid-template-columns: auto 1fr;
+            grid-template-rows: auto 1fr;
+            grid-template-column-gap:2px;
+            justify-items: stretch;
+            align-content:stretch;
+            height:100vh;
+            grid-template-areas:
+                "sidebar header"
+                "sidebar content"        
+        }
+        .header{
+            grid-area: header; display:grid;
+            padding-left: 10px;
+            font-family: CMU;
+        }
+        .header a{text-decoration:none; color: black;}
+        .header h1 {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            font-size: 72px;
+            font-weight: normal;
+        }
+        .header h2 {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-left: 2em;
+            font-size: 36px;
+            font-weight: normal;
+        }
+        
+        .container {
+            grid-area: content;
+            display:grid;
+            padding-left:10px;
+            border-top-style:solid;
+        }
+        .sidebar-main {
+            grid-area: sidebar;
+            display:grid;
+            padding-left: 10px;
+            background-color: black;
+        }
+
+        body {
+            margin: 0px;
+        }
         </style>
         {% render_block "css" %}
     </head>
     <body>
         {% cms_toolbar %}
-	<div class="grid-container">
+    <div class="grid-container">
 
-		<div class ="sidebar-main">
-		    <ul class="nav">
-			
-			{% show_menu_below_id "home" 0 100 100 100 %}
-			
-		    </ul>
-		</div>
-		<div class="header">
-		<h1><a href = "{% page_url "home" %}">TechTech Technologies</a></h1>
-		<h2>{% page_attribute "page_title" %}</h2>
-		</div>
-		<div class="container">
-			   {% block content %}{% endblock content %}
-		</div>
-	</div>
+        <div class ="sidebar-main">
+            <ul class="nav">
+            
+            {% show_menu_below_id "home" 0 100 100 100 %}
+            
+            </ul>
+        </div>
+        <div class="header">
+        <h1><a href = "{% page_url "home" %}">TechTech Technologies</a></h1>
+        <h2>{% page_attribute "page_title" %}</h2>
+        </div>
+        <div class="container">
+               {% block content %}{% endblock content %}
+        </div>
+    </div>
         {% render_block "js" %}
     </body>
 </html>
