@@ -2,12 +2,9 @@
 
 {% for child in children %}
 <li class="child{% if child.selected %} selected{% endif %}{% if child.ancestor %} ancestor{% endif %}{% if child.sibling %} sibling{% endif %}{% if child.descendant %} descendant{% endif %}">
-    <span class="expando{%if child|is_expanded%} expando-expanded{%endif%}{%if child.is_leaf_node%} nospando{%endif%}"><!--
+    <span class="expando{%if child|is_expanded%} expando-expanded{%endif%}{%if child.is_leaf_node%} nospando{%endif%}"></span><!--
     --><a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
-    {% if not child.is_leaf_node%}
-    </span>
-    {% endif %}
-	
+
     {% if child.children %}
     <ul class="menu_hide {%if child|is_expanded%}menu_show{%endif%}">
 		{% show_menu from_level to_level extra_inactive extra_active template "" "" child %}
