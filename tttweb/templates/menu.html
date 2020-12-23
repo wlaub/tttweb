@@ -16,7 +16,8 @@
 </li>
 {% endfor %}
 
-{% if child.menu_level == 0 %}
+
+{% if namespace == "root" %}
 <script>
     var toggler = document.getElementsByClassName("expando");
     var i;
