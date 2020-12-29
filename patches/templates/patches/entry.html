@@ -1,4 +1,6 @@
 
+{% load tttcms_tags %}
+
 <div class="container-fluid entry accordion" id="accordion-{{entry.id}}" {% if collapse %}data-toggle="collapse" data-target="#collapse-{{entry.id}}" {%endif%}>
 
     <div class="row">
@@ -56,7 +58,7 @@
         <div class = "col">
         <h3> Description </h3>
         <p>
-        {{entry.desc}}
+        {{entry.desc|render_markdown|safe}}
         </p>
 
         <h3> Images </h3>
