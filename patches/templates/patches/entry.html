@@ -13,7 +13,7 @@
 
         <!--/div-->
 
-        <div class = "col">
+        <div class = "col" style="margin-right:8px;">
             <div class = "row">
             <h3>
                  <a href = {% url 'patches:detail' entry.id %}>               
@@ -24,8 +24,7 @@
                 {{entry.date}} &#xff5c; {{entry.date|timesince}} ago
             </h3>
             </div>
-        <audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
-
+            <div class = "row">
         {% if entry.authors.all%}
         {% for author in entry.authors.all %}
         <a href = "{{request.path}}?author={{author.author.display_name}}{%if tags%}&tags={{tags}}{%endif%}">{{author.author.display_name}}</a>
@@ -33,9 +32,11 @@
         {% else %}
         No Authors
         {% endif %}
-        <br>
- 
-
+            </div>
+        <div class = "row"> 
+        <audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
+        </div>
+        <div class = "row" style="margin-top:0.25em;">
         {% if entry.tags.all %}
         Tags: {% for tag in entry.tags.all %}
         <a href = "{{request.path}}?{%if author%}author={{author.author.display_name}}{%endif%}tags={%if tags%}{{tags}}{%endif%}{%if not tag.name in taglist%}{%if tags%},{%endif%}{{tag.name}}{%endif%}" class="tooltiplink">
@@ -46,7 +47,7 @@
         {% else %}
         No Tags
         {% endif %}
-        <br>
+        </div>
 
 
         </div>

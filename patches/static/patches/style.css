@@ -85,7 +85,7 @@ li > p {
 }
 
 .tooltiptext {
-  max-width: calc(100% - 8px);
+  max-width: 100% - 8px;
   visibility: hidden;
   width:max-content;
   overflow:visible;
