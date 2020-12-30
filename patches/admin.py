@@ -16,6 +16,7 @@ class AttachmentInline(admin.StackedInline):
 
 class TagInline(admin.StackedInline):
     model = models.PatchTag
+#    model = models.PatchEntry.tags
     extra = 1
 
 class RepoInline(admin.TabularInline):
@@ -24,13 +25,23 @@ class RepoInline(admin.TabularInline):
 
 class PatchAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields':['name', 'desc', 'recording', 'date']}),
+        (None, {'fields':['name', 'desc', 'recording', 'date', 'tags']}),
         ]
-    inlines = [AuthorInline, ImageInline, TagInline, RepoInline, AttachmentInline]
+#    list_display = ['tags']
+    autocomplete_fields = ('tags',)
+    inlines = [AuthorInline, ImageInline, 
+#            TagInline, 
+            RepoInline, AttachmentInline]
 
 class LinkInline(admin.StackedInline):
     model = models.AuthorLink
     extra = 1
+
+class TagAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+    fieldsets = [
+        (None, {'fields': ['name']})
+        ]
 
 class PatchAuthorNameAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -38,5 +49,7 @@ class PatchAuthorNameAdmin(admin.ModelAdmin):
         ]
     inlines = [LinkInline]
 
-admin.site.register(PatchEntry, PatchAdmin)
 admin.site.register(models.PatchAuthorName, PatchAuthorNameAdmin)
+admin.site.register(models.PatchTag, TagAdmin)
+
+admin.site.register(PatchEntry, PatchAdmin)

@@ -5,12 +5,27 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class PatchTag(models.Model):
+    """
+    Tags associated with an entry, 0 or more
+    """
+#    entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name='tags')
+    name = models.TextField()
+    description = models.TextField()
+
+    def summary(self):
+        return self.description.split('\n')[0]
+
+    def __str__(self):
+        return self.name
+
 
 class PatchEntry(models.Model):
     name = models.TextField()
     recording = models.FileField(upload_to='patches/recordings/')
     date = models.DateTimeField()
-    desc = models.TextField()
+    desc = models.TextField(null=True)
+    tags = models.ManyToManyField(PatchTag)
 
     def __str__(self):
         return f'Patch Recording - {self.name}'
@@ -30,13 +45,6 @@ class PatchImages(models.Model):
     """
     entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='patches/images/')
-
-class PatchTag(models.Model):
-    """
-    Tags associated with an entry, 0 or more
-    """
-    entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name='tags')
-    name = models.TextField()
 
 class PatchAuthorName(models.Model):
     display_name = models.TextField()
