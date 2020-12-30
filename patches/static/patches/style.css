@@ -80,6 +80,12 @@ li > p {
 
 /* Tag Tooltips */
 
+.tagdiv {
+    width:1px;
+    background: black;
+    margin: 0.25em;
+}
+
 .tooltiplink {
 /*  position: relative;*/
   display: inline-block;
