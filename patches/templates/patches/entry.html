@@ -38,7 +38,7 @@
         </div>
         <div class = "row" style="margin-top:0.25em;">
         {% if entry.tags.all %}
-        Tags: {% for tag in entry.tags.all %}
+        Tags: &nbsp;{% for tag in entry.tags.all %}
         <a href = "{{request.path}}?{%if author%}author={{author.author.display_name}}{%endif%}tags={%if tags%}{{tags}}{%endif%}{%if not tag.name in taglist%}{%if tags%},{%endif%}{{tag.name}}{%endif%}" class="tooltiplink">
             {{tag.name}}<div class="tooltiptext">{{tag.name}}: {{tag.summary}}</div>
         </a>
