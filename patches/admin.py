@@ -40,7 +40,7 @@ class LinkInline(admin.StackedInline):
 class TagAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     fieldsets = [
-        (None, {'fields': ['name']})
+        (None, {'fields': ['name', 'description']})
         ]
 
 class PatchAuthorNameAdmin(admin.ModelAdmin):
