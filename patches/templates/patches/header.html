@@ -1,8 +1,8 @@
 <h1>
-{%if choice == 'index'%}*{%endif%}
-<a href = "{% url 'patches:index' %}" class="home-link ">Audio Files</a>
-&#xff5c;
-{%if choice == 'compare'%}*{%endif%}
-<a href = "{% url 'patches:compare'%}" class="home-link"> File Comparison </a>
+{%if choice == 'index'%}<span class="headersel"></span>{%endif%}<!--
+--><a href = "{% url 'patches:index' %}" class="home-link ">Audio Files</a>
+<div class="headerdiv"></div>
+{%if choice == 'compare'%}<span class="headersel"></span>{%endif%}<!--
+--><a href = "{% url 'patches:compare'%}" class="home-link">File Comparison </a>
 </h1>
  

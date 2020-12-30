@@ -11,6 +11,23 @@ li > p {
     margin-bottom: 0;
 }
 
+/* Header */
+
+.headerdiv {
+    width: 2px;
+    background: black;
+    display: inline-block;
+    margin-bottom: -0.125em;
+    height: 1em;
+}
+.headersel:before{
+    content: "*";
+    position:relative;
+    bottom: -0.125em;
+    margin-right:0.125em;
+}
+
+/* Main List */
 
 .entry-list{
     max-width: 95%;
