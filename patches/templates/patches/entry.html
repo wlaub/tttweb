@@ -39,7 +39,7 @@
         {% if entry.tags.all %}
         Tags: {% for tag in entry.tags.all %}
         <a href = "{{request.path}}?{%if author%}author={{author.author.display_name}}{%endif%}tags={%if tags%}{{tags}}{%endif%}{%if not tag.name in taglist%},{{tag.name}}{%endif%}" class="tooltiplink">
-            {{tag.name}}<span class="tooltiptext">{{tag.summary}}</span>
+            {{tag.name}}<div class="tooltiptext">{{tag.name}}: {{tag.summary}}</div>
         </a>
         {% if not forloop.last%}&#xff5c;{% endif %}
         {% endfor %}
