@@ -64,6 +64,9 @@ class PatchImages(models.Model):
     def __str__(self):
         return str(self.image)
 
+    def __html__(self):
+        return "test"
+
 
 class PatchEntry(models.Model):
     name = models.TextField()
@@ -112,5 +115,51 @@ class PatchRepoAttachment(models.Model):
     repo = models.URLField()
     commit = models.TextField()
     filename = models.TextField()
+
+##
+## Comparison Models
+##
+
+class BinaryQuestion(models.Model):
+    """
+    A question with two possible answers.
+    E.g. 
+    question                          answer_a   answer_b
+    Is entry_a similar to entry_b?    yes      / no
+    Is entry_a better than entry_b?   yes      / no
+
+    There needs to be a way of imposing constraints on the way entries
+    can be selected per-question.
+    """
+    question = models.TextField()
+    answer_a = models.TextField()
+    answer_b = models.TextField()
+
+    def get_options(self):
+        #TODO: if/else on question text to hardcode custom filters
+        #TODO: query patch entries to select two
+        pass
+
+    def __str__(self):
+        return str(question)
+
+class BinaryAnswer(models.Model):
+    """
+    An answer for a comparison of two entries.
+    count_a/count_b are the number of times the respective answers were given
+    For example given the question Is entry_a better than entry_b? then count_a
+    gives the number of yes responses and count_b gives the number of no responses.
+
+    Have to be careful about the possibility of duplicate cases where A/B are
+    the same but reversed. Possible that's fine and those should just be
+    combined in post.
+    """
+    entryA = models.ForeignKey(PatchEntry, on_delete=models.PROTECT, related_name='a_comparisons')
+    entryB = models.ForeignKey(PatchEntry, on_delete=models.PROTECT, related_name='b_comparisons')
+    question = models.ForeignKey(BinaryQuestion, on_delete=models.PROTECT, related_name="results")
+    count_a = models.IntegerField(default=0)
+    count_b = models.IntegerField(default=0)
+
+
 
 
