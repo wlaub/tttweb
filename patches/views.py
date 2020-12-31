@@ -4,7 +4,7 @@ from django.views import generic
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import PatchEntry, PatchAuthor, BinaryQuestion
+from .models import PatchEntry, PatchAuthorName, BinaryQuestion
 
 class IndexView(generic.ListView):
     template_name = 'patches/index.html'
@@ -14,9 +14,10 @@ class IndexView(generic.ListView):
         context = super(IndexView, self).get_context_data(**kwargs)
         author = self.request.GET.get('author', False)
         try:
-            user = PatchAuthor.objects.get(author__display_name=author)
+            user = PatchAuthorName.objects.get(display_name=author)
             context['author'] = user
         except ObjectDoesNotExist:
+            
             pass
         tags = self.request.GET.get('tags', False)
         if tags:

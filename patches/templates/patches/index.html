@@ -9,22 +9,22 @@ Audio Files
     <div class="col-auto entry-header">
         {% include "patches/header.html" with choice="index" %}
 
-        {% if author or True %}
+        {% if author %}
 
             <div class = "row author-info" >
 
                 <div>
-                {% if author.author.author_image %}
-                <img src="{{author.author.author_image.url}}" class="author-thumbnail" />
+                {% if author.author_image %}
+                <img src="{{author.author_image.url}}" class="author-thumbnail" />
                 {% endif %}
                 </div>
 
                 <div>
-                <h2>{{author.author.display_name}}</h2>
+                <h2>{{author.display_name}}</h2>
                 <h3>External Links</h3>
-                {% if author.author.links %}
+                {% if author.links %}
                 <ul>
-                    {% for link in author.author.links.all %}
+                    {% for link in author.links.all %}
                     <li>
                         <a href="{{link.url}}">{{link.url}}</a>
                     </li>
