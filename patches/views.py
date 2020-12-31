@@ -86,6 +86,13 @@ class TagView(generic.ListView):
     template_name = 'patches/tags.html'
     context_object_name = 'tags'
 
+    def get_queryset(self):
+        q = super(TagView, self).get_queryset()
+
+        q = sorted(q.all(), key = lambda x: x.count(), reverse=True)
+
+        return q
+
     """
     def get_context_data(self, **kwargs):
         context = super(TagView, self).get_context_data(**kwargs)
