@@ -2,7 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import generic
 
-from .models import PatchEntry, PatchAuthor
+from django.core.exceptions import ObjectDoesNotExist
+
+from .models import PatchEntry, PatchAuthor, BinaryQuestion
 
 class IndexView(generic.ListView):
     template_name = 'patches/index.html'
@@ -46,8 +48,34 @@ class DetailView(generic.DetailView):
 class CompareView(generic.ListView):
     model = PatchEntry
     template_name = 'patches/compare.html'
+    context_object_name = 'patch_entries'
 
-    def get_quesyset(self):
-        return None
+    default_pk = 1
+
+    class Dummy():
+        question = 'No such question'
+        def get_options(self): return None
+
+    def get_question(self):
+        try:
+            return BinaryQuestion.objects.get(pk=self.kwargs.get('pk', self.default_pk))
+        except ObjectDoesNotExist:
+            return None
+
+    def get_context_data(self, **kwargs):
+        context = super(CompareView, self).get_context_data(**kwargs)
+
+        context['question'] = self.get_question()
+
+        return context
+
+    def get_queryset(self):
+        question = self.get_question()
+
+        if question:
+            options = question.get_options()
+            return options
+        else:
+            return None
     
 
