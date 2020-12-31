@@ -1,11 +1,10 @@
-{% extends "patches/base.html" %}
+{% extends "patches/base_list.html" %}
 
 {% block title %}
 Audio Files
 {% endblock %}
 
-{% block body %}
-<div class="container entry-list">
+{% block list_body %}
     <div class="col-auto entry-header">
         {% include "patches/header.html" with choice="index" %}
 
@@ -34,7 +33,6 @@ Audio Files
                 </div>
             </div>
         {% endif %}
-
     </div>
 
     {% if patch_entries %}
@@ -44,6 +42,5 @@ Audio Files
     {% else %}
     Nothing
     {% endif %}
-</div>
 
 {% endblock %}
