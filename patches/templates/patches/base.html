@@ -37,8 +37,10 @@
 
         //Only show if javascript enabled
         var autoplaydiv = document.getElementById("autoplaydiv");
-        autoplaydiv.style.visibility='visible';
-
+        if(audiolist.length > 1)
+        {
+            autoplaydiv.style.visibility='visible';
+        }
         var autoplay = document.getElementById("autoplayswitch");
 
 
