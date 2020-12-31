@@ -175,6 +175,12 @@ class BinaryAnswer(models.Model):
     count_a = models.IntegerField(default=0)
     count_b = models.IntegerField(default=0)
 
+    def __str__(self):
+        return f"""Binary Answer:
+  {self.entryA}
+  {self.question} {self.question.answer_a} = {self.count_a} / {self.question.answer_b} = {self.count_b}
+  {self.entryB}"""
+
 class BinaryResponseDetail(models.Model):
     """
     Details about a specific response i.e. date/time, a or b, origin
@@ -182,7 +188,11 @@ class BinaryResponseDetail(models.Model):
     """
     answer = models.ForeignKey(BinaryAnswer, on_delete=models.PROTECT, related_name='responses')
     selected_a = models.BooleanField()
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True)
     origin = models.TextField() #This should be some kind of hash uniquely identifying an origin
 
+    def __str__(self):
+        return f"""{self.answer}
+    {self.answer.question.answer_a if self.selected_a else self.answer.question.answer_b} At: {self.date}
+    From: {self.origin}"""
 
