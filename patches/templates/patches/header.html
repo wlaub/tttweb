@@ -4,7 +4,10 @@
 --><a href = "{% url 'patches:index' %}" class="home-link ">Audio Files</a>
 <div class="headerdiv"></div>
 {%if choice == 'compare'%}<span class="headersel"></span>{%endif%}<!--
---><a href = "{% url 'patches:compare'%}" class="home-link">File Comparison </a>
+--><a href = "{% url 'patches:compare'%}" class="home-link">File Comparison</a>
+<div class="headerdiv"></div>
+{%if choice == 'tags'%}<span class="headersel"></span>{%endif%}<!--
+--><a href = "{% url 'patches:tags'%}" class="home-link">Tags</a>
 </h1>
 </div>
 <div style="float:right;position:relative;bottom:-1.5em;">

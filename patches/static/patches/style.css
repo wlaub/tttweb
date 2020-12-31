@@ -41,6 +41,8 @@ li > p {
 	border-style: none none solid none;
 	padding-top: 10px;
 	padding-bottom:10px;
+    padding-left:10px;
+    padding-right:10px;
 }
 .entry-header {
 	border: 1px black;
@@ -66,8 +68,8 @@ li > p {
 	vertical-align:middle;
 }
 .adaptive-thumbnail {
-	margin-left:10px;
 	min-height:128px;
+    margin-right:10px;
 	height: 100%;
 	width: 150px;
 	object-fit:cover;

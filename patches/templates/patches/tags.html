@@ -1,0 +1,22 @@
+{% extends "patches/base_list.html" %}
+{% load tttcms_tags %}
+{% block title %}
+Audio File: {{patchentry.name}}
+{% endblock %}
+
+
+
+{% block list_body %}
+<div class="col-auto entry-header">
+    {% include "patches/header.html" with choice="" %}
+</div>
+
+{%for tag in tags%}
+<div class="entry">
+    <h2><a href="{% url 'patches:index' %}?tags={{tag.name}}">{{tag.name}}</a> - {{tag.count}}</h2>
+    {{tag.description|render_markdown|safe}}
+</div>
+{%endfor%}
+
+{% endblock %}
+	
