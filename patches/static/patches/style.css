@@ -110,6 +110,13 @@ li > p {
 
 /* Tag Tooltips */
 
+.tag-selected{
+    color:black;
+}
+.tag-selected:hover{
+    color:black;
+}
+
 .tagdiv {
     width:1px;
     background: black;
