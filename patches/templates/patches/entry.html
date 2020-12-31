@@ -6,14 +6,17 @@
     <div class="row">
         <!-- div class = "col-auto" -->
 
+        {% if not hide_image %}
         <a href = "{{entry.images.all.first.image.url}}">
             <img src = "{{entry.images.all.first.image.url}}" class="adaptive-thumbnail">
             </a>
-            
+        {% endif %}  
 
         <!--/div-->
 
         <div class = "col" style="margin-right:8px;">
+
+            {%if not hide_info%}
             <div class = "row">
             <h3>
                  <a href = {% url 'patches:detail' entry.id %}>               
@@ -24,35 +27,46 @@
                 {{entry.date}} &#xff5c; {{entry.date|timesince}} ago
             </h3>
             </div>
-            <div class = "row">
-        {% if entry.authors.all%}
-        {% for author in entry.authors.all %}
-        <a href = "{{request.path}}?author={{author.author.display_name}}{%if tags%}&tags={{tags}}{%endif%}">{{author.author.display_name}}</a>
-        {% endfor %}
-        {% else %}
-        No Authors
-        {% endif %}
-            </div>
-        <div class = "row"> 
-        <audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
-        </div>
-        <div class = "row" style="margin-top:0.25em;">
-        {% if entry.tags.all %}
-        Tags: &nbsp;{% for tag in entry.tags.all %}
-        <a href = "{{request.path}}?{%if author%}author={{author.author.display_name}}{%endif%}tags={%if tags%}{{tags}}{%endif%}{%if not tag.name in taglist%}{%if tags%},{%endif%}{{tag.name}}{%endif%}" class="tooltiplink">
-            {{tag.name}}<div class="tooltiptext">{{tag.name}}: {{tag.summary}}</div>
-        </a>
-        {% if not forloop.last%}<div class="tagdiv"></div>{% endif %}
-        {% endfor %}
-        {% else %}
-        No Tags
-        {% endif %}
-        </div>
+            {%endif%}
 
+            {%if not hide_info%}
+            <div class = "row">
+                {% if entry.authors.all%}
+                {% for author in entry.authors.all %}
+                <a href = "{{request.path}}?author={{author.author.display_name}}{%if tags%}&tags={{tags}}{%endif%}">{{author.author.display_name}}</a>
+                {% endfor %}
+                {% else %}
+                No Authors
+                {% endif %}
+            </div>
+            {%endif%}
+
+
+            <div class = "row"> 
+            <audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
+            </div>
+
+            {% if not hide_info %}
+
+            <div class = "row" style="margin-top:0.25em;">
+            {% if entry.tags.all %}
+            Tags: &nbsp;{% for tag in entry.tags.all %}
+            <a href = "{{request.path}}?{%if author%}author={{author.author.display_name}}{%endif%}tags={%if tags%}{{tags}}{%endif%}{%if not tag.name in taglist%}{%if tags%},{%endif%}{{tag.name}}{%endif%}" class="tooltiplink">
+                {{tag.name}}<div class="tooltiptext">{{tag.name}}: {{tag.summary}}</div>
+            </a>
+            {% if not forloop.last%}<div class="tagdiv"></div>{% endif %}
+            {% endfor %}
+            {% else %}
+            No Tags
+            {% endif %}
+            </div>
+
+            {%endif%}
 
         </div>
     </div>
 
+    {%if not hide_info%}
     <div class = "row {% if collapse %}collapse{%endif%}" id = "collapse-{{entry.id}}">
         <div class = "col">
         <h3> Description </h3>
@@ -96,5 +110,6 @@
 
         </div>
     </div>
+    {%endif%}
 
 </div>

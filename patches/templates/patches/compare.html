@@ -43,7 +43,7 @@ Recording Comparison
     </div>
 
     {% if patch_entries %}
-        {% include "patches/entry.html" with entry=patch_entries.0 collapse=True %}
+        {% include "patches/entry.html" with entry=patch_entries.0 collapse=True hide_image=True hide_info=True %}
     {% elif question %}       
         Could not retrieve comparison options
     {%endif%}
@@ -58,7 +58,7 @@ Recording Comparison
         </div>
 
     {% if patch_entries %}
-        {% include "patches/entry.html" with entry=patch_entries.1 collapse=True %}       
+        {% include "patches/entry.html" with entry=patch_entries.1 collapse=True hide_image=True hide_info=True %}       
     {% endif %}
 </div>
 
