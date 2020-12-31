@@ -36,11 +36,22 @@ Recording Comparison
     </div>
 
     {% if patch_entries %}
-        {% for entry in patch_entries %}
-            {% include "patches/entry.html" with entry=entry collapse=True %}
-        {% endfor %}
-    {% else %}
-    Not yet implemented
+        {% include "patches/entry.html" with entry=patch_entries.0 collapse=True %}
+    {%elif question%}       
+        Could not retrieve options
+    {%endif%}
+        <div class="entry">
+        <h2>
+        {% if question %}
+        {{ question.question }} {{question.answer_a}} / {{question.answer_b}}
+        {%else%}
+        Could not find comparison question
+        {%endif%}
+         </h2>
+        </div>
+
+    {% if patch_entries %}
+        {% include "patches/entry.html" with entry=patch_entries.1 collapse=True %}       
     {% endif %}
 </div>
 

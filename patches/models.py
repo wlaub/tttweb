@@ -1,6 +1,7 @@
 from django.db import models
 import os
 import hashlib
+import random
 
 from django.contrib.auth.models import User
 
@@ -138,10 +139,13 @@ class BinaryQuestion(models.Model):
     def get_options(self):
         #TODO: if/else on question text to hardcode custom filters
         #TODO: query patch entries to select two
-        pass
+        entries = PatchEntry.objects.all()
+        if entries.count() < 2: return None
+
+        return random.sample(list(entries), k=2)
 
     def __str__(self):
-        return str(question)
+        return str(self.question)
 
 class BinaryAnswer(models.Model):
     """

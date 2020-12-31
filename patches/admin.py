@@ -56,8 +56,15 @@ class PatchAuthorNameAdmin(admin.ModelAdmin):
         ]
     inlines = [LinkInline]
 
+
+
+class BinaryQuestionAdmin(admin.ModelAdmin):
+    fields= ('question', 'answer_a', 'answer_b')
+
 admin.site.register(models.PatchAuthorName, PatchAuthorNameAdmin)
 admin.site.register(models.PatchTag, TagAdmin)
 admin.site.register(models.PatchImages, PatchImageAdmin)
 
 admin.site.register(PatchEntry, PatchAdmin)
+
+admin.site.register(models.BinaryQuestion, BinaryQuestionAdmin)
