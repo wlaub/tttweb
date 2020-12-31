@@ -8,7 +8,9 @@ Audio Files
 <div class="container entry-list">
     <div class="col-auto entry-header">
         {% include "patches/header.html" with choice="index" %}
-        {% if author %}
+
+        {% if author or True %}
+
             <div class = "row author-info" >
 
                 <div>

@@ -16,7 +16,7 @@ class IndexView(generic.ListView):
         try:
             user = PatchAuthor.objects.get(author__display_name=author)
             context['author'] = user
-        except:
+        except ObjectDoesNotExist:
             pass
         tags = self.request.GET.get('tags', False)
         if tags:
