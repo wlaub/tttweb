@@ -43,7 +43,7 @@
 
 
             <div class = "row"> 
-            <audio controls src="{{entry.recording.url}}" style="width:100%"></audio><br>
+            <audio controls src="{{entry.recording.url}}" id="audioplayer-{{entry.pk}}" style="width:100%"></audio><br>
             </div>
 
             {% if not hide_info %}
