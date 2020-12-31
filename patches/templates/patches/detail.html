@@ -1,11 +1,14 @@
-{% extends "patches/base.html" %}
+{% extends "patches/base_list.html" %}
 {% block title %}
 Audio File: {{patchentry.name}}
 {% endblock %}
 
 
 
-{% block body %}
+{% block list_body %}
+<div class="col-auto entry-header">
+    {% include "patches/header.html" with choice="index" %}
+</div>
 
 {% include "patches/entry.html" with entry=patchentry collapse=False%}
 

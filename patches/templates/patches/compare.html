@@ -1,40 +1,41 @@
-{% extends "patches/base.html" %}
+{% extends "patches/base_list.html" %}
 
 {% block title %}
 Recording Comparison
 {% endblock %}
 
-{% block body %}
-<div class="container entry-list">
-    <div class="col-auto entry-header">
-        {% include "patches/header.html" with choice="compare" %}
-    </div>
+{% block list_body %}
 
-    <!-- TODO: temporary -->
-    <div class="entry">
-    {% for q in question_list %}
-    <a href="{% url 'patches:compare' q.pk %}">{{q.question}}</a><br>
-    {% endfor %}
-    </div>
-
-    {% if patch_entries %}
-        {% include "patches/entry.html" with entry=patch_entries.0 collapse=True hide_image=True hide_info=True %}
-    {% elif question %}       
-        Could not retrieve comparison options
-    {%endif%}
-        <div class="entry-question">
-        <h2>
-        {% if question %}
-        {{ question.question }} {{question.answer_a}} / {{question.answer_b}}
-        {%else%}
-        No matching comparison question
-        {%endif%}
-         </h2>
-        </div>
-
-    {% if patch_entries %}
-        {% include "patches/entry.html" with entry=patch_entries.1 collapse=True hide_image=True hide_info=True %}       
-    {% endif %}
+<div class="col-auto entry-header">
+    {% include "patches/header.html" with choice="compare" %}
 </div>
+
+
+
+<!-- TODO: temporary -->
+<div class="entry">
+{% for q in question_list %}
+<a href="{% url 'patches:compare' q.pk %}">{{q.question}}</a><br>
+{% endfor %}
+</div>
+
+{% if patch_entries %}
+    {% include "patches/entry.html" with entry=patch_entries.0 collapse=True hide_image=True hide_info=True %}
+{% elif question %}       
+    Could not retrieve comparison options
+{%endif%}
+    <div class="entry-question">
+    <h2>
+    {% if question %}
+    {{ question.question }} {{question.answer_a}} / {{question.answer_b}}
+    {%else%}
+    No matching comparison question
+    {%endif%}
+     </h2>
+    </div>
+
+{% if patch_entries %}
+    {% include "patches/entry.html" with entry=patch_entries.1 collapse=True hide_image=True hide_info=True %}       
+{% endif %}
 
 {% endblock %}
