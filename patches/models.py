@@ -136,13 +136,18 @@ class BinaryQuestion(models.Model):
     answer_a = models.TextField()
     answer_b = models.TextField()
 
+    selection_method = models.IntegerField(default=0)
+
     def get_options(self):
         #TODO: if/else on question text to hardcode custom filters
         #TODO: query patch entries to select two
-        entries = PatchEntry.objects.all()
-        if entries.count() < 2: return None
+        if self.selection_method == 0: #any two at random
+            entries = PatchEntry.objects.all()
+            if entries.count() < 2: return None
 
-        return random.sample(list(entries), k=2)
+            return random.sample(list(entries), k=2)
+        else:
+            return None
 
     def __str__(self):
         return str(self.question)

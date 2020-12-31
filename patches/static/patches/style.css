@@ -94,6 +94,18 @@ li > p {
 	font-weight:bold;
 }
 
+/* Comparison */
+
+.entry-question {
+	border: 1px black;
+	border-style: none none solid none;
+//	padding-top: 10px;
+//	padding-bottom:10px;
+    text-align:center;
+}
+.entry-question>h2 {
+    margin-bottom:0;
+}
 
 /* Tag Tooltips */
 

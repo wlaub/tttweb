@@ -35,17 +35,24 @@ Recording Comparison
 
     </div>
 
+    <!-- TODO: temporary -->
+    <div class="entry">
+    {% for q in question_list %}
+    <a href="{% url 'patches:compare' q.pk %}">{{q.question}}</a><br>
+    {% endfor %}
+    </div>
+
     {% if patch_entries %}
         {% include "patches/entry.html" with entry=patch_entries.0 collapse=True %}
-    {%elif question%}       
-        Could not retrieve options
+    {% elif question %}       
+        Could not retrieve comparison options
     {%endif%}
-        <div class="entry">
+        <div class="entry-question">
         <h2>
         {% if question %}
         {{ question.question }} {{question.answer_a}} / {{question.answer_b}}
         {%else%}
-        Could not find comparison question
+        No matching comparison question
         {%endif%}
          </h2>
         </div>

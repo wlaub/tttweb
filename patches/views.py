@@ -67,6 +67,8 @@ class CompareView(generic.ListView):
 
         context['question'] = self.get_question()
 
+        context['question_list'] = BinaryQuestion.objects.all()
+
         return context
 
     def get_queryset(self):
