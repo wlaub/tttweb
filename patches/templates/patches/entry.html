@@ -3,7 +3,7 @@
 
 <div class="container-fluid entry accordion" id="accordion-{{entry.id}}" {% if collapse %}data-toggle="collapse" data-target="#collapse-{{entry.id}}" {%endif%}>
 
-    <div class="row">
+    <div class="row" style="margin-left:0;margin-right:0">
         <!-- div class = "col-auto" -->
 
         {% if not hide_image %}
@@ -14,7 +14,7 @@
 
         <!--/div-->
 
-        <div class = "col" style="margin-right:10px; margin-left:10px;">
+        <div class = "col" style="">
 
             {%if not hide_info%}
             <div class = "row">

@@ -41,6 +41,12 @@ class PatchTag(models.Model):
     def summary(self):
         return self.description.split('\n')[0]
 
+    def count(self):
+        """
+        Return the number of PatchEntries having this tag
+        """
+        return PatchEntry.objects.filter(tags__name=self.name).count()
+
     def __str__(self):
         return self.name
 

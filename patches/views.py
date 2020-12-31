@@ -4,7 +4,7 @@ from django.views import generic
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import PatchEntry, PatchAuthorName, BinaryQuestion
+from .models import PatchEntry, PatchAuthorName, BinaryQuestion, PatchTag
 
 class IndexView(generic.ListView):
     template_name = 'patches/index.html'
@@ -81,4 +81,18 @@ class CompareView(generic.ListView):
         else:
             return None
     
+class TagView(generic.ListView):
+    model =PatchTag 
+    template_name = 'patches/tags.html'
+    context_object_name = 'tags'
 
+    """
+    def get_context_data(self, **kwargs):
+        context = super(TagView, self).get_context_data(**kwargs)
+        context['count'] = {}
+        for tag in context['tags']:
+            tagname = tag.name
+            context['count'][tagname] = PatchEntry.objects.filter(tags__name=tagname).count()
+
+        return context
+    """
