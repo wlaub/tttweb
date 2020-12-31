@@ -28,7 +28,26 @@
             e.stopPropagation();
         });
     }
-   </script>
+    </script>
+
+    <!-- Audio autoplay -->
+    <script>
+        var audiolist = document.querySelectorAll("audio");
+        var playlist = {};
+
+        for (i = 0; i < audiolist.length-1; i++)
+        {
+            element = audiolist[i];
+            playlist[element.id] = audiolist[i+1].id;
+            console.log(i)
+            element.addEventListener("ended", function(e) {
+                next = document.getElementById(playlist[e.target.id])
+                next.play();
+            });
+            console.log(i)
+        }
+        console.log(playlist);
+    </script>
 
 </body>
 </html>
