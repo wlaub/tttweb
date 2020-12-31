@@ -61,6 +61,18 @@ class PatchAuthorNameAdmin(admin.ModelAdmin):
 class BinaryQuestionAdmin(admin.ModelAdmin):
     fields= ('question', 'answer_a', 'answer_b', 'selection_method')
 
+class BinaryResponseDetailAdmin(admin.ModelAdmin):
+    exclude = []
+
+class BRDInline(admin.TabularInline):
+    model=models.BinaryResponseDetail
+    extra=0
+
+class BinaryAnswerAdmin(admin.ModelAdmin):
+    fields = ('entryA', 'entryB', 'question', 'count_a', 'count_b')
+    inlines = [BRDInline]
+
+
 admin.site.register(models.PatchAuthorName, PatchAuthorNameAdmin)
 admin.site.register(models.PatchTag, TagAdmin)
 admin.site.register(models.PatchImages, PatchImageAdmin)
@@ -68,3 +80,6 @@ admin.site.register(models.PatchImages, PatchImageAdmin)
 admin.site.register(PatchEntry, PatchAdmin)
 
 admin.site.register(models.BinaryQuestion, BinaryQuestionAdmin)
+admin.site.register(models.BinaryResponseDetail, BinaryResponseDetailAdmin)
+admin.site.register(models.BinaryAnswer, BinaryAnswerAdmin)
+

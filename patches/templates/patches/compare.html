@@ -27,7 +27,19 @@ Recording Comparison
     <div class="entry-question">
     <h2>
     {% if question %}
-    {{ question.question }} {{question.answer_a}} / {{question.answer_b}}
+    {{ question.question }}
+    {% if patch_entries%}
+    <form action="{%url 'patches:compare' question.pk %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <input type="hidden" name="question_id" value="{{question.pk}}">
+        <input type="hidden" name="entry_a_id" value="{{patch_entries.0.pk}}">
+        <input type="hidden" name="entry_b_id" value="{{patch_entries.1.pk}}">
+
+        <button type="submit" name="answer" value="a" class="compare-button">{{question.answer_a}}</button>
+    / 
+        <button type="submit" name="answer" value="b" class="compare-button">{{question.answer_b}}</button>   
+    </form>
+    {% endif %}
     {%else%}
     No matching comparison question
     {%endif%}
