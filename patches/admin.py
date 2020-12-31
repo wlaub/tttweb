@@ -59,7 +59,7 @@ class PatchAuthorNameAdmin(admin.ModelAdmin):
 
 
 class BinaryQuestionAdmin(admin.ModelAdmin):
-    fields= ('question', 'answer_a', 'answer_b')
+    fields= ('question', 'answer_a', 'answer_b', 'selection_method')
 
 admin.site.register(models.PatchAuthorName, PatchAuthorNameAdmin)
 admin.site.register(models.PatchTag, TagAdmin)
