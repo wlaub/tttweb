@@ -169,6 +169,14 @@ class BinaryAnswer(models.Model):
     count_a = models.IntegerField(default=0)
     count_b = models.IntegerField(default=0)
 
-
+class BinaryResponseDetail(models.Model):
+    """
+    Details about a specific response i.e. date/time, a or b, origin
+    Should be able to reconstruct a BinaryAnswer over time
+    """
+    answer = models.ForeignKey(BinaryAnswer, on_delete=models.PROTECT, related_name='responses')
+    selected_a = models.BooleanField()
+    date = models.DateTimeField()
+    origin = models.TextField() #This should be some kind of hash uniquely identifying an origin
 
 
