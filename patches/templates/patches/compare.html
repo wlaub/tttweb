@@ -8,31 +8,6 @@ Recording Comparison
 <div class="container entry-list">
     <div class="col-auto entry-header">
         {% include "patches/header.html" with choice="compare" %}
-        {% if author %}
-            <div class = "row author-info" >
-
-                <div>
-                {% if author.author.author_image %}
-                <img src="{{author.author.author_image.url}}" class="author-thumbnail" />
-                {% endif %}
-                </div>
-
-                <div>
-                <h2>{{author.author.display_name}}</h2>
-                <h3>External Links</h3>
-                {% if author.author.links %}
-                <ul>
-                    {% for link in author.author.links.all %}
-                    <li>
-                        <a href="{{link.url}}">{{link.url}}</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-                </div>
-            </div>
-        {% endif %}
-
     </div>
 
     <!-- TODO: temporary -->
