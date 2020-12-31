@@ -35,18 +35,26 @@
         var audiolist = document.querySelectorAll("audio");
         var playlist = {};
 
+        //Only show if javascript enabled
+        var autoplaydiv = document.getElementById("autoplaydiv");
+        autoplaydiv.style.visibility='visible';
+
+        var autoplay = document.getElementById("autoplayswitch");
+
+
         for (i = 0; i < audiolist.length-1; i++)
         {
             element = audiolist[i];
             playlist[element.id] = audiolist[i+1].id;
-            console.log(i)
             element.addEventListener("ended", function(e) {
-                next = document.getElementById(playlist[e.target.id])
-                next.play();
+                if(autoplay.checked)
+                {
+                    next = document.getElementById(playlist[e.target.id])
+                    next.play();
+                }
             });
-            console.log(i)
         }
-        console.log(playlist);
+
     </script>
 
 </body>
