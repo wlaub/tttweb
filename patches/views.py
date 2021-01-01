@@ -70,7 +70,7 @@ class DetailView(generic.DetailView):
                 if b.entryA == a.entryB:
                     complement=True
             if not complement:
-                answers_a.append(b)
+                answers_a |= b
 
         answers = list(map(lambda x: x.get_merged(entry), answers_a))
 
