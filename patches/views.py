@@ -55,6 +55,34 @@ class DetailView(generic.DetailView):
     model = PatchEntry
     template_name = 'patches/detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        entry = context['object']
+
+        #Need all the cases where entry is A
+        #Also need all the cases where entry is B and there is no complement
+        answers = models.BinaryAnswer.objects.filter(question__slug='similar')
+        answers_a = answers.filter(entryA=entry)
+        answers_b = answers.filter(entryB=entry)
+        for b in answers_b:
+            for a in answers_a:
+                complement = False
+                if b.entryA == a.entryB:
+                    complement=True
+            if not complement:
+                answers_a.append(b)
+
+        answers = list(map(lambda x: x.get_merged(entry), answers_a))
+
+        answers = sorted(answers, key=lambda x: x.get_score(), reverse=True)
+
+        answers = answers[:3]
+
+        context['similar'] = answers
+
+
+        return context
+
 class CompareView(generic.ListView):
     model = PatchEntry
     template_name = 'patches/compare.html'

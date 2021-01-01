@@ -142,7 +142,15 @@ class BinaryQuestion(models.Model):
     answer_a = models.TextField()
     answer_b = models.TextField()
 
+    slug = models.SlugField(null = True)
+
     selection_method = models.IntegerField(default=0)
+
+    #Map slugs to methods for merging complementary pairs of answers
+    merge_methods = {
+        'symmetric': ['similar',],
+        'reversed' : ['better',],
+        }
 
     def get_options(self):
         #TODO: if/else on question text to hardcode custom filters
@@ -161,19 +169,84 @@ class BinaryQuestion(models.Model):
 class BinaryAnswer(models.Model):
     """
     An answer for a comparison of two entries.
-    count_a/count_b are the number of times the respective answers were given
-    For example given the question Is entry_a better than entry_b? then count_a
-    gives the number of yes responses and count_b gives the number of no responses.
+    For any given pair of options there can be two answers to a question
+    depending on the ordering of the options. These two answers are said to
+    be complementary, and may be merged in different ways depending on the kind
+    of question.
 
-    Have to be careful about the possibility of duplicate cases where A/B are
-    the same but reversed. Possible that's fine and those should just be
-    combined in post.
     """
     entryA = models.ForeignKey(PatchEntry, on_delete=models.PROTECT, related_name='a_comparisons')
     entryB = models.ForeignKey(PatchEntry, on_delete=models.PROTECT, related_name='b_comparisons')
     question = models.ForeignKey(BinaryQuestion, on_delete=models.PROTECT, related_name="results")
     count_a = models.IntegerField(default=0)
     count_b = models.IntegerField(default=0)
+
+    def align(self, entry):
+        """
+        Align self to the given entry so that it corresponds to entryA
+        This uses the merge_method to determine whether or not to reverse
+        the counts as well
+        """
+        result = {
+            'entryA': self.entryA,
+            'entryB': self.entryB,
+            'question': self.question,
+            'count_a': self.count_a,
+            'count_b': self.count_b,
+            }
+
+        if self.entryA == entry:
+            result = BinaryAnswer(**result) 
+            return result
+
+        slug = self.question.slug
+        if self.entryB == entry:
+            result['entryB'] = self.entryA
+            result['entryA'] = self.entryB
+            if slug in BinaryQuestion.merge_methods['reversed']:
+                result['count_b'] = self.count_a
+                result['count_a'] = self.count_b
+            result = BinaryAnswer(**result)
+            return result
+
+        raise KeyError(f'Entry {entry} not in answer {self}')
+
+    def get_merged(self, align_entry = None):
+        """
+        If align_entry is given, align that to entryA
+        Return a dictionary of this answer merged with is complement if it exists
+        {
+        entryA, entryB, question, count_a, count_b
+        }
+        """
+        slug = self.question.slug
+        other = BinaryAnswer.objects.filter(entryA=self.entryB, entryB=self.entryA, question=self.question)
+        if align_entry:
+            result=self.align(align_entry)
+        else:
+            result = {
+                'entryA': self.entryA,
+                'entryB': self.entryB,
+                'question': self.question,
+                'count_a': self.count_a,
+                'count_b': self.count_b,
+                }
+            result = BinaryAnswer(**result)
+
+        if other.count() == 0:
+            return result
+        else:
+            other=other[0].align(result.entryA)
+            result.count_a += other.count_a
+            result.count_b += other.count_b
+            return result
+
+    def get_score(self):
+        """
+        May change to be more statistical later but basically give a number
+        tellling how much the answer is answer_a
+        """
+        return self.count_a/(self.count_a+self.count_b)
 
     def __str__(self):
         return f"""Binary Answer:
