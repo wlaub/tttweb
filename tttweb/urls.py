@@ -18,7 +18,7 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
-    url(r'^patches/', include('patches.urls')),
+    url(r'^audio/', include('patches.urls')),
     url(r'^admin/', admin.site.urls),  # NOQA
     url(r'^', include('cms.urls')),
 )
