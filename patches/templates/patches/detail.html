@@ -17,7 +17,7 @@ Audio File: {{patchentry.name}}
 </div>
 
 {% for answer in similar %}
-{%widthratio answer.get_score 1 100 %}%
+{%widthratio answer.get_score 1 100 %}% ({{answer.count_a}} / {{answer.count_b|add:answer.count_a}})
 {% include "patches/entry.html" with entry=answer.entryB collapse=True%}
 {% endfor %}
 
