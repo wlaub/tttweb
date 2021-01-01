@@ -171,7 +171,7 @@ class CompareView(generic.ListView):
         except Exception as e:
             message.add_message(request, messages.ERROR, 'Failed to record comparison response: {e}')
         else:
-            messages.add_message(request, messages.SUCCESS, 'Comparison recorded')
+            messages.add_message(request, messages.SUCCESS, f'Comparison recorded at {answer_detail.date.strftime("%H:%M:%S %Z")}')
 
         return HttpResponseRedirect(request.path)
 
