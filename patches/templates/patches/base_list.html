@@ -7,6 +7,24 @@ List Base
 {% block body %}
 <div class="container entry-list">
 
+{% for message in messages %}
+<div class="message-{{message.level_tag}}" id="message-{{forloop.counter}}">
+    {{message}}
+    <!--    <span>&times;</span>-->
+    <script>
+        closebutton = document.createElement("span");
+        closebutton.classList.add('message-close')
+        closebutton.innerHTML = '&times;'
+        thisdiv = document.getElementById("message-{{forloop.counter}}");
+        thisdiv.appendChild(closebutton)
+        closebutton.addEventListener("click", function(){
+            this.parentElement.style.display='none';
+            });
+
+    </script>
+</div>
+{% endfor %}
+
     {% block list_body%}
     {% endblock %}
 
