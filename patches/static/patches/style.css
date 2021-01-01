@@ -11,6 +11,46 @@ li > p {
     margin-bottom: 0;
 }
 
+/* Message styling */
+
+.message-success {
+    border-bottom: 1px solid black;
+    text-align:center;
+    background:#bbffbb;
+}
+.message-info {
+    border-bottom: 1px solid black;
+    text-align:center;
+    background:#bbbbff;
+}
+.message-warning {
+    border-bottom: 1px solid black;
+    text-align:center;
+    background:#ffff88;
+}
+.message-error {
+    border-bottom: 1px solid black;
+    text-align:center;
+    background:#ff8888;
+}
+.message-debug {
+    border-bottom: 1px solid black;
+    text-align:center;
+    background:#ff88ff;
+}
+
+.message-close {
+    cursor: pointer;
+    background : rgba(0,0,0,.1);
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+}
+
+
+
+
+
+
 /* Header */
 
 .headerdiv {

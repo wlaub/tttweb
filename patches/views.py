@@ -6,6 +6,8 @@ from django.views import generic
 
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.contrib import messages
+
 from django.db.models import Q
 
 from .models import PatchEntry, PatchAuthorName, BinaryQuestion, PatchTag
@@ -89,9 +91,6 @@ class CompareView(generic.ListView):
             return None
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
-        print(request.META.get('REMOTE_ADDR'))
-
         origin_id = request.META.get('REMOTE_ADDR')
         
         md5 = hashlib.md5()
@@ -166,15 +165,13 @@ class CompareView(generic.ListView):
         else:
             answer.count_b+=1
 
-        answer.save()
-        answer_detail.save()
-
-        print(answer)
-        print(answer_detail)
-
-        allresp = models.BinaryResponseDetail.objects.filter(answer=answer)
-        print(allresp)
-
+        try:
+            answer.save()
+            answer_detail.save()
+        except Exception as e:
+            message.add_message(request, messages.ERROR, 'Failed to record comparison response: {e}')
+        else:
+            messages.add_message(request, messages.SUCCESS, 'Comparison recorded')
 
         return HttpResponseRedirect(request.path)
 
