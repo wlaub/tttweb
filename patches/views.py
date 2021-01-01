@@ -62,7 +62,7 @@ class DetailView(generic.DetailView):
         #Need all the cases where entry is A
         #Also need all the cases where entry is B and there is no complement
         answers = models.BinaryAnswer.objects.filter(question__slug='similar')
-        answers_a = answers.filter(entryA=entry)
+        answers_a = list(answers.filter(entryA=entry))
         answers_b = answers.filter(entryB=entry)
         for b in answers_b:
             for a in answers_a:
@@ -70,7 +70,7 @@ class DetailView(generic.DetailView):
                 if b.entryA == a.entryB:
                     complement=True
             if not complement:
-                answers_a |= b
+                answers_a.append(b)
 
         answers = list(map(lambda x: x.get_merged(entry), answers_a))
 
