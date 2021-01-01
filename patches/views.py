@@ -1,4 +1,5 @@
 import hashlib
+import datetime
 
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
@@ -125,81 +126,87 @@ class CompareView(generic.ListView):
         md5.update(bytes(origin_id, encoding='ascii'))
         origin_hash = md5.hexdigest()
 
-        is_answer_a = request.POST['answer'][0]=='a'
-        question_id = request.POST['question_id'][0]
-        entry_a_id = request.POST['entry_a_id'][0]
-        entry_b_id = request.POST['entry_b_id'][0]
-
-        #Get all the answers for this pair
-        answers = models.BinaryAnswer.objects.filter(
-                Q(entryA_id=entry_a_id, entryB_id=entry_b_id)
-                )
-        """
-        There can be equivalent answers under different conditions
-        Consider two entries 0 and 1 submitted to a question
-
-        Consider the question "is A > B?"
-        There can be two answers where 0 and 1 are compared
-        Answer 0 > 1?
-            count_a - number of times 0 > 1
-            count_b - number of times 1 > 0
-        Answer 1 > 0?
-            count_a - number of times 1 > 0
-            count_b - number of times 0 > 1
-        Complete answer:
-            count_0>1 = (0>1).count_a + (1>0).count_b
-            count_1>0 = (0>1).count_b + (1>0).count_a
-
-        Consider the question is "A = B?"
-        Answer 0 = 1?
-            count_a = number of times 0 == 1
-            count_b = number of times 0 != 1
-        Answer 1 = 0?
-            count_a = number of times 0 == 1
-            count_b = number of times 0 != 1
-        Complete answer:
-            count 0==1 = (0=1).count_a+(1=0).count_a
-            count 0!=1 = (0=1).count_b+(1=0).count_b
-
-        Note that the complete answer is computed differently for these two case.
-        These duplicates are allowed to coexist independtently to simply creation.
-        The complete answer must be computed on a case by case basic according the
-        nature of the question, but only requires the combination of exactly two
-        different answers
-        """
-
-        #filter to this question
-        answers = answers.filter(question_id=question_id)
-
-        if answers.count() == 0:
-            #Make a new answer if it doesn't exist
-            answer = models.BinaryAnswer(
-                entryA_id=entry_a_id, 
-                entryB_id=entry_b_id, 
-                question_id = question_id)
+        if request.POST['answer'][0] not in ['a','b']:
+            messages.add_message(request, messages.INFO, 
+                f'Comparison skipped at {datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S %Z")}')
         else:
-            answer = answers[0]
+            is_answer_a = request.POST['answer'][0]=='a'
+            question_id = request.POST['question_id'][0]
+            entry_a_id = request.POST['entry_a_id'][0]
+            entry_b_id = request.POST['entry_b_id'][0]
 
-        #Generate the answer detail
-        answer_detail = models.BinaryResponseDetail(
-                answer=answer, 
-                selected_a = is_answer_a,
-                origin = origin_hash
-                )
+            #Get all the answers for this pair
+            answers = models.BinaryAnswer.objects.filter(
+                    Q(entryA_id=entry_a_id, entryB_id=entry_b_id)
+                    )
+            """
+            There can be equivalent answers under different conditions
+            Consider two entries 0 and 1 submitted to a question
 
-        #Update the answer values
-        if is_answer_a:
-            answer.count_a+=1
-        else:
-            answer.count_b+=1
+            Consider the question "is A > B?"
+            There can be two answers where 0 and 1 are compared
+            Answer 0 > 1?
+                count_a - number of times 0 > 1
+                count_b - number of times 1 > 0
+            Answer 1 > 0?
+                count_a - number of times 1 > 0
+                count_b - number of times 0 > 1
+            Complete answer:
+                count_0>1 = (0>1).count_a + (1>0).count_b
+                count_1>0 = (0>1).count_b + (1>0).count_a
 
-        try:
-            answer.save()
-            answer_detail.save()
-        except Exception as e:
-            message.add_message(request, messages.ERROR, 'Failed to record comparison response: {e}')
-        else:
-            messages.add_message(request, messages.SUCCESS, f'Comparison recorded at {answer_detail.date.strftime("%H:%M:%S %Z")}')
+            Consider the question is "A = B?"
+            Answer 0 = 1?
+                count_a = number of times 0 == 1
+                count_b = number of times 0 != 1
+            Answer 1 = 0?
+                count_a = number of times 0 == 1
+                count_b = number of times 0 != 1
+            Complete answer:
+                count 0==1 = (0=1).count_a+(1=0).count_a
+                count 0!=1 = (0=1).count_b+(1=0).count_b
+
+            Note that the complete answer is computed differently for these two case.
+            These duplicates are allowed to coexist independtently to simply creation.
+            The complete answer must be computed on a case by case basic according the
+            nature of the question, but only requires the combination of exactly two
+            different answers
+            """
+
+            #filter to this question
+            answers = answers.filter(question_id=question_id)
+
+            if answers.count() == 0:
+                #Make a new answer if it doesn't exist
+                answer = models.BinaryAnswer(
+                    entryA_id=entry_a_id, 
+                    entryB_id=entry_b_id, 
+                    question_id = question_id)
+            else:
+                answer = answers[0]
+
+            #Generate the answer detail
+            answer_detail = models.BinaryResponseDetail(
+                    answer=answer, 
+                    selected_a = is_answer_a,
+                    origin = origin_hash
+                    )
+
+            #Update the answer values
+            if is_answer_a:
+                answer.count_a+=1
+            else:
+                answer.count_b+=1
+
+            try:
+                answer.save()
+                answer_detail.save()
+            except Exception as e:
+                messages.add_message(request, messages.ERROR, 
+                    'Failed to record comparison response: {e}')
+            else:
+                messages.add_message(request, messages.SUCCESS, 
+                    f'Comparison recorded at {answer_detail.date.strftime("%H:%M:%S %Z")}')
 
         return HttpResponseRedirect(request.path)
 
