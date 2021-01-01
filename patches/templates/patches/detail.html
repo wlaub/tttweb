@@ -12,5 +12,14 @@ Audio File: {{patchentry.name}}
 
 {% include "patches/entry.html" with entry=patchentry collapse=False%}
 
+<div class="entry-question">
+    <h2>Similar Audio Files<h2>
+</div>
+
+{% for answer in similar %}
+{%widthratio answer.get_score 1 100 %}%
+{% include "patches/entry.html" with entry=answer.entryB collapse=True%}
+{% endfor %}
+
 {% endblock %}
 	

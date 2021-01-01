@@ -59,7 +59,7 @@ class PatchAuthorNameAdmin(admin.ModelAdmin):
 
 
 class BinaryQuestionAdmin(admin.ModelAdmin):
-    fields= ('question', 'answer_a', 'answer_b', 'selection_method')
+    fields= ('question', 'answer_a', 'answer_b', 'slug', 'selection_method')
 
 class BinaryResponseDetailAdmin(admin.ModelAdmin):
     exclude = []
