@@ -1,18 +1,15 @@
 
-{% load tttcms_tags %}
+{% load tttcms_tags thumbnail %}
 
 <div class="container-fluid entry accordion" id="accordion-{{entry.id}}" {% if collapse %}data-toggle="collapse" data-target="#collapse-{{entry.id}}" {%endif%}>
 
     <div class="row" style="margin-left:0;margin-right:0">
-        <!-- div class = "col-auto" -->
 
         {% if not hide_image %}
         <a href = "{{entry.images.all.first.image.url}}">
-            <img src = "{{entry.images.all.first.image.url}}" class="adaptive-thumbnail">
+            <img src = "{{entry.images.all.first.image|thumbnail_url:'audio_file'}}" class="adaptive-thumbnail">
             </a>
         {% endif %}  
-
-        <!--/div-->
 
         <div class = "col" style="">
 
@@ -71,6 +68,8 @@ href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' tags=tag
         </div>
     </div>
 
+    <!-- Expandable info -->
+
     {%if not hide_info%}
     <div class = "row {% if collapse %}collapse{%endif%}" id = "collapse-{{entry.id}}">
         <div class = "col">
@@ -82,7 +81,7 @@ href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' tags=tag
         <h3> Images </h3>
         {% for image in entry.images.all %}
             <a href = "{{image.image.url}}">
-                <img src = "{{image.image.url}}" class="thumbnail">
+                <img src = "{{image.image|thumbnail_url:'audio_file'}}" class="thumbnail">
             </a>
         {% endfor %}
 

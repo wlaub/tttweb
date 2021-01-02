@@ -36,7 +36,6 @@ class IndexView(generic.ListView):
             context['taglist'] = tags.split(',')
         else:
             context['taglist'] = []
-        context['tags'] = tags
 
         return context
 
