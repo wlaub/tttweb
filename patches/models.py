@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 
 from django.core.files.storage import FileSystemStorage
 
+from easy_thumbnails.fields import ThumbnailerImageField
+
 # Create your models here.
 
 class UniqueFileStorage(FileSystemStorage):
@@ -60,8 +62,10 @@ class PatchImages(models.Model):
     Images attached to an entry, 1 or more
     """
 #    entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to=unique_file_name, storage=UniqueFileStorage)
+#    image = models.ImageField(upload_to=unique_file_name, storage=UniqueFileStorage)
+    image = ThumbnailerImageField(upload_to=unique_file_name, storage=UniqueFileStorage)
     checksum = models.CharField(max_length=36, unique=True, null=True)
+    
 
     def save(self, *args, **kwargs):
 #        if not self.pk:

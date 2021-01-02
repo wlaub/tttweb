@@ -175,6 +175,12 @@ MIGRATION_MODULES = {
     
 }
 
+THUMBNAIL_ALIASES = {
+    '':{
+        'audio_file': {'size': (200,200), 'crop': True},
+    }        
+}
+
 THUMBNAIL_PROCESSORS = (
     'easy_thumbnails.processors.colorspace',
     'easy_thumbnails.processors.autocrop',
