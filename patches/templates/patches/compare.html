@@ -10,15 +10,6 @@ Recording Comparison
     {% include "patches/header.html" with choice="compare" %}
 </div>
 
-
-
-<!-- TODO: temporary -->
-<div class="entry">
-{% for q in question_list %}
-<a href="{% url 'patches:compare' q.pk %}">{{q.question}}</a><br>
-{% endfor %}
-</div>
-
 {% if patch_entries %}
     {% include "patches/entry.html" with entry=patch_entries.0 collapse=True hide_image=True hide_info=True %}
 {% elif question %}       
@@ -26,8 +17,25 @@ Recording Comparison
 {%endif%}
     <div class="entry-question">
     <h2>
-    {% if question %}
-    {{ question.question }}
+
+    <div class="dropdown" style="display:inline-block">
+
+        <div class = "compare-button compare-dropdown-button">
+        {%if question %}
+            {{question.question}}
+        {% else %}
+            Select a comparison question
+        {% endif %}
+        &#x25be;
+        </div>
+
+        <div class="dropdown-menu comparison-dropdown">
+            {% for q in question_list %}
+            <a class="dropdown-item" href="{% url 'patches:compare' q.pk%}">{{q.question}}</a>
+            {% endfor %}
+        </div>
+    </div>
+
     {% if patch_entries%}
     <form action="{%url 'patches:compare' question.pk %}" method="post" style="display:inline;">
         {% csrf_token %}
@@ -43,9 +51,6 @@ Recording Comparison
  
     </form>
     {% endif %}
-    {%else%}
-    No matching comparison question
-    {%endif%}
      </h2>
     </div>
 
