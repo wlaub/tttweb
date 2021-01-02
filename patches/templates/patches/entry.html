@@ -33,7 +33,10 @@
             <div class = "row">
                 {% if entry.authors.all%}
                 {% for author in entry.authors.all %}
-                <a href = "{{request.path}}?author={{author.author.display_name}}{%if tags%}&tags={{tags}}{%endif%}">{{author.author.display_name}}</a>
+                <a 
+href="{{request.path}}?{% format_querystring request.GET 'tags' author=author.author.display_name %}">
+                    {{author.author.display_name}}
+                </a>
                 {% endfor %}
                 {% else %}
                 No Authors
@@ -51,7 +54,8 @@
             <div class = "row" style="margin-top:0.25em;">
             {% if entry.tags.all %}
             Tags: &nbsp;{% for tag in entry.tags.all %}
-            <a href = "{{request.path}}?{%if author%}author={{author.author.display_name}}{%endif%}tags={%if tags%}{{tags}}{%endif%}{%if not tag.name in taglist%}{%if tags%},{%endif%}{{tag.name}}{%endif%}" class="tooltiplink{%if tag.name in taglist%} tag-selected{%endif%}">
+            <a href = "{{request.path}}?{% format_querystring request.GET 'tags' tags=tag.name%}"
+                class="tooltiplink{%if tag.name in taglist%} tag-selected{%endif%}">
                 {{tag.name}}<div class="tooltiptext">{{tag.name}}: {{tag.summary}}</div>
             </a>
             {% if not forloop.last%}<div class="tagdiv"></div>{% endif %}
