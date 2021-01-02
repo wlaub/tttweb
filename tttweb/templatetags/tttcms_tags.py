@@ -14,6 +14,10 @@ def render_markdown(value):
     md = markdown.Markdown(extensions=['extra', 'sane_lists', 'nl2br'])
     return md.convert(value)
 
+@register.filter(name='page_range')
+def page_range(page_obj):
+    return range(1,100)
+    return range(1,page_obj.paginator.num_pages+1)
 
 @register.simple_tag
 def format_querystring(base_query, *args, **kwargs):
@@ -35,14 +39,17 @@ def format_querystring(base_query, *args, **kwargs):
         query[key] = urllib.parse.unquote(value).split(',')
 
     for key, value in kwargs.items():
-        if not key in query.keys() or not key in args:
-            query[key] = [value]
+        if value == None:
+            query.pop(key, None)
+        elif not key in query.keys() or not key in args:
+            query[key] = [str(value)]
         elif not value in query[key]:
-            query[key].append(value)
+            query[key].append(str(value))
 
     result = []
     for key, value in query.items():
         result.append((f'{key}',f'{",".join(value)}'))
-    print(query)
-    return urlencode(result)
+    result = urlencode(result)
+    if len(result) == 0: return ''
+    return '?' + result
 

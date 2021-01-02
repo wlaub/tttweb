@@ -36,6 +36,77 @@ Audio Files
         {% endif %}
     </div>
 
+    {% if page_obj.paginator.num_pages > 1 %}
+
+    <div style="border-bottom: 1px solid black;display:inline-flex;width:100%">
+
+        <div style="float-left;display:inline-flex;">
+            <div class="page-container paginate-left">
+            <a href = 
+"{% url 'patches:index' %}{% format_querystring request.GET page='1'%}"
+            >
+                &lt;&lt;
+            </a>
+            </div>
+
+            <div class="page-container paginate-left">       
+            <a href = 
+            {%if page_obj.has_previous %}
+"{% url 'patches:index' %}{% format_querystring request.GET page=page_obj.previous_page_number%}"
+            {% else %}
+"{% url 'patches:index' %}{% format_querystring request.GET page=None%}"
+            {%endif%}
+            >
+                &lt;
+            </a>
+            </div>
+        </div>
+
+
+        <div style="display:inline-flex;width:100%;overflow-x:hidden;position:relative;">
+        <div style="display:inline-flex;position:absolute;
+            left:min(calc(50% - 1em - (2em) * ({{page_obj.number}} - 1)), -1px);
+            ">
+            {% for index in page_obj.paginator.page_range %}
+            <div class="page-container paginate-center" {%if forloop.last %}style="border-right:1px solid black;"{%endif%}> 
+                <a href = 
+                "{% url 'patches:index' %}{% format_querystring request.GET page=index%}"
+                   {% if index == page_obj.number %}
+                   style="text-decoration:underline"
+                   {%endif%}
+                >
+                {{index}}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        </div>
+
+        <div style = "float:right; display:inline-flex;">
+            <div class="page-container paginate-right">
+            <a href = 
+           {%if page_obj.has_next%}   
+"{% url 'patches:index' %}{% format_querystring request.GET page=page_obj.next_page_number%}"
+            >
+            {%else%}
+"{% url 'patches:index' %}{% format_querystring request.GET page=page_obj.paginator.num_pages%}"
+            {%endif%}
+                &gt;
+            </a>
+            </div>
+
+            <div class="page-container paginate-right">
+            <a href = 
+"{% url 'patches:index' %}{% format_querystring request.GET page=page_obj.paginator.num_pages%}">
+                &gt;&gt;
+            </a>
+            </div>
+        </div>
+
+    </div>
+
+    {% endif %}
+
     {% if patch_entries %}
         {% for entry in patch_entries %}
             {% include "patches/entry.html" with entry=entry collapse=True %}

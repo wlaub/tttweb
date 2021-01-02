@@ -34,7 +34,7 @@
                 {% if entry.authors.all%}
                 {% for author in entry.authors.all %}
                 <a 
-href="{{request.path}}?{% format_querystring request.GET 'tags' author=author.author.display_name %}">
+href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' author=author.author.display_name %}">
                     {{author.author.display_name}}
                 </a>
                 {% endfor %}
@@ -54,7 +54,8 @@ href="{{request.path}}?{% format_querystring request.GET 'tags' author=author.au
             <div class = "row" style="margin-top:0.25em;">
             {% if entry.tags.all %}
             Tags: &nbsp;{% for tag in entry.tags.all %}
-            <a href = "{{request.path}}?{% format_querystring request.GET 'tags' tags=tag.name%}"
+            <a 
+href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' tags=tag.name%}"
                 class="tooltiplink{%if tag.name in taglist%} tag-selected{%endif%}">
                 {{tag.name}}<div class="tooltiptext">{{tag.name}}: {{tag.summary}}</div>
             </a>

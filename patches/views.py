@@ -20,6 +20,8 @@ class IndexView(generic.ListView):
     template_name = 'patches/index.html'
     context_object_name = 'patch_entries'
 
+    paginate_by=10
+
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         author = self.request.GET.get('author', False)
