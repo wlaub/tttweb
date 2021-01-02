@@ -155,8 +155,29 @@ li > p {
     background:none;
     margin-top:2px;
     margin-bottom:2px;
-
+    color:black;
 }
+.compare-dropdown-button{
+    padding-left:0.25em;
+    padding-right:0.25em;
+}
+.compare-dropdown-button:focus{
+    outline:none;
+}
+.comparison-dropdown
+{
+    width:100%;
+    border-radius:0;
+    border-color:black;
+}
+.dropdown:hover .comparison-dropdown{
+    display:block;
+    position:absolute;
+    top: calc(100% - 3px);
+    margin-top:0;
+    left:0px;
+}
+
 
 /* Tag Tooltips */
 
