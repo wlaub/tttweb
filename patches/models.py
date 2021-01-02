@@ -3,6 +3,8 @@ import os
 import hashlib
 import random
 
+from django.urls import reverse
+
 from django.contrib.auth.models import User
 
 from django.core.files.storage import FileSystemStorage
@@ -89,6 +91,9 @@ class PatchEntry(models.Model):
 
     def __str__(self):
         return f'Patch Recording - {self.name}'
+
+    def get_absolute_url(self):
+        return reverse('patches:detail', kwargs={'pk': self.id})
 
 class PatchAttachments(models.Model):
     """

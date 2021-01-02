@@ -4,15 +4,34 @@ import datetime
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
+from django.contrib.syndication.views import Feed
 
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.contrib import messages
 
+from django.urls import reverse
+
 from django.db.models import Q
 
+from tttweb.templatetags import tttcms_tags 
 from .models import PatchEntry, PatchAuthorName, BinaryQuestion, PatchTag
 from . import models
+
+
+def get_index_queryset(request):
+    q = PatchEntry.objects.order_by('-date')
+
+    author = request.GET.get('author', False)
+    if author:
+        q = q.filter(authors__author__display_name=author)
+    tags = request.GET.get('tags', False)
+    if tags:
+        taglist = tags.split(',')
+        for tag in taglist:
+            q = q.filter(tags__name=tag)
+
+    return q
 
 
 
@@ -37,21 +56,41 @@ class IndexView(generic.ListView):
         else:
             context['taglist'] = []
 
+#        messages.add_message(self.request, messages.INFO, tttcms_tags.format_querystring(self.request.GET))
+        messages.add_message(self.request, messages.INFO, self.request.META['HTTP_HOST'])
         return context
 
     def get_queryset(self):
-        q = PatchEntry.objects.order_by('-date')
-
-        author = self.request.GET.get('author', False)
-        if author:
-            q = q.filter(authors__author__display_name=author)
-        tags = self.request.GET.get('tags', False)
-        if tags:
-            taglist = tags.split(',')
-            for tag in taglist:
-                q = q.filter(tags__name=tag)
-
+        q = get_index_queryset(self.request)
         return q
+
+class IndexFeed(Feed):
+    title = 'New Audio Files'
+    description = 'New audio files uploaded to the website'
+
+    def get_object(self, request):
+        return request
+
+    def link(self, request):
+        url = reverse('patches:index')+tttcms_tags.format_querystring(request.GET)
+
+        return url
+
+    def item_link(self, item):
+        return item.get_absolute_url()
+
+    def items(self, obj):
+        return get_index_queryset(obj)
+
+    def item_author_name(self, item):
+        return ', '.join(map(lambda x: x.author.display_name, item.authors.all()))
+
+    def item_pubdate(self, item):
+        return item.date
+
+    def item_categories(self,item):
+        return list(map(lambda x: x.name, item.tags.all()))
+
 
 class DetailView(generic.DetailView):
     model = PatchEntry
