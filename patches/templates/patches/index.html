@@ -7,7 +7,7 @@ Audio Files
 
 {% block list_body %}
     <div class="col-auto entry-header">
-        {% include "patches/header.html" with choice="index" %}
+        {% include "patches/header.html" with choice="index" rss_feed="patches:rss"%}
 
         {% if author %}
 
