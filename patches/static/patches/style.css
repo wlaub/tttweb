@@ -118,6 +118,14 @@ border-right: 1px solid black;
 
 /* Main List */
 
+.hide-autoplay{
+    display:none !important;
+}
+.autoplay-wrapper{
+    display:inline;
+    margin-left:0.5em;
+}
+
 .entry-list{
     max-width: 95%;
     border: 1px black;

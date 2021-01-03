@@ -13,13 +13,11 @@
 
 <div style="float:right;position:relative; bottom:-1.5em;">
 {% if rss_feed %}
-<a href = "{% url rss_feed %}" style="margin-right:1em;">RSS</a>
+<a href = "{% url rss_feed %}" style="">RSS</a>
 {% endif %}
 
-<div style="float:right;position:relative;bottom:0;">
-<div class="custom-control custom-switch" style="visibility:hidden;" id="autoplaydiv">
+<div class="custom-control custom-switch autoplay-wrapper hide-autoplay" id="autoplaydiv">
     <input type = "checkbox" class="custom-control-input" id="autoplayswitch">
     <label class="custom-control-label" for="autoplayswitch">Autoplay</label>
-</div>
 </div>
 </div>
