@@ -83,7 +83,9 @@ class IndexFeed(Feed):
 
     def item_description(self, item):
         desc =  tttcms_tags.render_markdown(item.desc)
-        result = f'<![CDATA[{desc}]]>'
+        result = f"""<![CDATA[
+    {desc}
+    ]]>"""
         return result
 
     def item_link(self, item):
