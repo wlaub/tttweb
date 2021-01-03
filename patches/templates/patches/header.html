@@ -10,10 +10,16 @@
 --><a href = "{% url 'patches:tags'%}" class="home-link">Tags</a>
 </h1>
 </div>
-<div style="float:right;position:relative;bottom:-1.5em;">
+
+<div style="float:right;position:relative; bottom:-1.5em;">
+{% if rss_feed %}
+<a href = "{% url rss_feed %}" style="margin-right:1em;">RSS</a>
+{% endif %}
+
+<div style="float:right;position:relative;bottom:0;">
 <div class="custom-control custom-switch" style="visibility:hidden;" id="autoplaydiv">
     <input type = "checkbox" class="custom-control-input" id="autoplayswitch">
     <label class="custom-control-label" for="autoplayswitch">Autoplay</label>
 </div>
 </div>
-
+</div>

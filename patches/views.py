@@ -59,7 +59,6 @@ class IndexView(generic.ListView):
             context['taglist'] = []
 
 #        messages.add_message(self.request, messages.INFO, tttcms_tags.format_querystring(self.request.GET))
-        messages.add_message(self.request, messages.INFO, self.request.META['HTTP_HOST'])
         return context
 
     def get_queryset(self):
