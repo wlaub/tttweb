@@ -1,5 +1,6 @@
 import hashlib
 import datetime
+import mimetypes
 
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
@@ -11,6 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 
 from django.urls import reverse
+from django.utils.feedgenerator import Enclosure
 
 from django.db.models import Q
 
@@ -69,18 +71,31 @@ class IndexFeed(Feed):
     description = 'New audio files uploaded to the website'
 
     def get_object(self, request):
+        self.request = request
         return request
 
     def link(self, request):
-        url = reverse('patches:index')+tttcms_tags.format_querystring(request.GET)
+        url = request.build_absolute_uri(
+                reverse('patches:index')+tttcms_tags.format_querystring(request.GET)
+                )
 
         return url
 
     def item_link(self, item):
-        return item.get_absolute_url()
+        url = item.get_absolute_url()
+        url = self.request.build_absolute_uri(url)
+        return url
 
     def items(self, obj):
-        return get_index_queryset(obj)
+        q = get_index_queryset(obj)
+        q  = q[:10]
+        return q
+
+    def item_enclosures(self, item):
+        mime_type = mimetypes.guess_type(item.recording.path)[0]
+        url = self.request.build_absolute_uri(item.recording.url)
+        length = str(item.recording.file.size)
+        return [Enclosure(url=url, length=length, mime_type=mime_type)]
 
     def item_author_name(self, item):
         return ', '.join(map(lambda x: x.author.display_name, item.authors.all()))
