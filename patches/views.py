@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 
 from django.urls import reverse
-from django.utils.feedgenerator import Enclosure
+from django.utils.feedgenerator import Enclosure, Rss201rev2Feed
 
 from django.db.models import Q
 
@@ -65,9 +65,20 @@ class IndexView(generic.ListView):
         q = get_index_queryset(self.request)
         return q
 
+class MyRSSFeed(Rss201rev2Feed):
+    def add_item_elements(self, handler, item):
+#        handler.addQuickElement(u'description', item['description'])
+        handler.startElement(u'content:encoded', {})
+        handler.startElement(f'![CDATA[{item["description"]}]]', {})
+        handler.endElement(u'content:encoded')
+        item['description'] = ''
+        super(MyRSSFeed, self).add_item_elements(handler, item)
+#        print(item)
+
 class IndexFeed(Feed):
     title = 'New Audio Files'
     description = 'New audio files uploaded to the website'
+    feed_type = MyRSSFeed
 
     def get_object(self, request):
         self.request = request
@@ -82,10 +93,7 @@ class IndexFeed(Feed):
 
     def item_description(self, item):
         desc =  tttcms_tags.render_markdown(item.desc)
-        result = f"""<![CDATA[
-    {desc}
-    ]]>"""
-        return result
+        return desc
 
     def item_link(self, item):
         url = item.get_absolute_url()
