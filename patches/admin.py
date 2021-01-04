@@ -32,7 +32,8 @@ class PatchAdmin(admin.ModelAdmin):
     inlines = [AuthorInline, 
 #            ImageInline, 
 #            TagInline, 
-            RepoInline, AttachmentInline]
+            RepoInline, AttachmentInline,
+            ]
 
 class LinkInline(admin.StackedInline):
     model = models.AuthorLink
@@ -56,7 +57,10 @@ class PatchAuthorNameAdmin(admin.ModelAdmin):
         ]
     inlines = [LinkInline]
 
+class AudioMetaAdmin(admin.ModelAdmin):
+    fields = ['duration', ]
 
+admin.site.register(models.AudioMetadata, AudioMetaAdmin)
 
 class BinaryQuestionAdmin(admin.ModelAdmin):
     fields= ('question', 'answer_a', 'answer_b', 'slug', 'selection_method')

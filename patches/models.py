@@ -84,28 +84,31 @@ import audio_metadata as audiometa
 
 class AudioMetadata(models.Model):
 
-    duration = models.FloatField(default=0)
+    duration = models.DurationField()
 
     @classmethod
     def create(cls, recording):
         metadata = audiometa.load(recording.path)
         kwargs = {}
-        kwargs['duration'] = metadata['streaminfo']['duration']
+        kwargs['duration'] = datetime.timedelta(seconds=metadata['streaminfo']['duration'])
         result = cls(**kwargs)
         return result
+        
 
 
 class PatchEntry(models.Model):
     name = models.TextField()
     recording = models.FileField(upload_to='patches/recordings/')
-    meta = models.ForeignKey(AudioMetadata, null=True, on_delete=models.CASCADE)
+    meta = models.ForeignKey(AudioMetadata, null=True, on_delete=models.CASCADE, related_name='source')
     date = models.DateTimeField()
     desc = models.TextField(null=True)
     tags = models.ManyToManyField(PatchTag, blank=True)
     images = models.ManyToManyField(PatchImages, blank=True)
 
+
     def __str__(self):
-        return f'Patch Recording - {self.name}'
+        print(dir(self.meta.duration))
+        return f'Patch Recording - {self.meta.duration} - {self.name}'
 
     def save(self, *args, **kwargs):
         if self.meta == None:
