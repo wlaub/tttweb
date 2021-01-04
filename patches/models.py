@@ -2,6 +2,7 @@ from django.db import models
 import os
 import hashlib
 import random
+import datetime
 
 from django.urls import reverse
 
@@ -88,12 +89,14 @@ class AudioMetadata(models.Model):
 
     @classmethod
     def create(cls, recording):
-        metadata = audiometa.load(recording.path)
-        kwargs = {}
-        kwargs['duration'] = datetime.timedelta(seconds=metadata['streaminfo']['duration'])
-        result = cls(**kwargs)
+        result = cls()
+        result.refresh(recording)
         return result
-        
+
+    def refresh(self, recording):
+        metadata = audiometa.load(recording.path)
+        self.duration = datetime.timedelta(seconds=metadata['streaminfo']['duration'])
+
     def __str__(self):
         return f'Duration: {self.duration}'
 
@@ -110,12 +113,20 @@ class PatchEntry(models.Model):
     def __str__(self):
         return f'Patch Recording - {self.meta.duration} - {self.name}'
 
+    @classmethod
+    def refresh_metadata(cls):
+        q = cls.objects.all()
+        for entry in q:
+            entry.meta.refresh(entry.recording)
+            entry.meta.save()
+
     def save(self, *args, **kwargs):
+        super(PatchEntry, self).save(*args, **kwargs)
+        #This comes after so that the file exists
         if self.meta == None:
             self.meta = AudioMetadata.create(self.recording)
             self.meta.save()
-
-        super(PatchEntry, self).save(*args, **kwargs)
+            super(PatchEntry, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('patches:detail', kwargs={'pk': self.id})
