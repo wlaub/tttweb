@@ -22,7 +22,18 @@ from . import models
 
 
 def get_index_queryset(request):
-    q = PatchEntry.objects.order_by('-date')
+    order_map = {
+        'date': 'date',
+        'length': 'meta__duration'
+        }
+
+    order_by = request.GET.get('order_by', 'date')
+    order_by = order_map.get(order_by, order_by)
+    ascending = request.GET.get('ascending', False)
+    if not ascending:
+        order_by = f'-{order_by}'
+
+    q = PatchEntry.objects.order_by(order_by)
 
     author = request.GET.get('author', False)
     if author:
@@ -32,6 +43,12 @@ def get_index_queryset(request):
         taglist = tags.split(',')
         for tag in taglist:
             q = q.filter(tags__name=tag)
+
+    min_date = request.GET.get('min_date', False)
+    max_date = request.GET.get('max_date', False)
+    min_length = request.GET.get('length', False)
+    max_length = request.GET.get('length', False)
+
 
     return q
 
