@@ -38,6 +38,14 @@ Audio Files
 
     {% include "patches/pages.html" %}
 
+    <div class="entry-header">
+    <form>
+        {% csrf_token %}
+        {{ filter_form }}
+        <input type="submit" value="update">
+    </form>
+    </div>
+
     {% if patch_entries %}
         {% for entry in patch_entries %}
             {% include "patches/entry.html" with entry=entry collapse=True %}
