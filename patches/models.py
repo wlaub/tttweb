@@ -80,10 +80,25 @@ class PatchImages(models.Model):
     def __html__(self):
         return "test"
 
+import audio_metadata as audiometa
+
+class AudioMetadata(models.Model):
+
+    duration = models.FloatField(default=0)
+
+    @classmethod
+    def create(cls, recording):
+        metadata = audiometa.load(recording.path)
+        kwargs = {}
+        kwargs['duration'] = metadata['streaminfo']['duration']
+        result = cls(**kwargs)
+        return result
+
 
 class PatchEntry(models.Model):
     name = models.TextField()
     recording = models.FileField(upload_to='patches/recordings/')
+    meta = models.ForeignKey(AudioMetadata, null=True, on_delete=models.CASCADE)
     date = models.DateTimeField()
     desc = models.TextField(null=True)
     tags = models.ManyToManyField(PatchTag, blank=True)
@@ -91,6 +106,13 @@ class PatchEntry(models.Model):
 
     def __str__(self):
         return f'Patch Recording - {self.name}'
+
+    def save(self, *args, **kwargs):
+        if self.meta == None:
+            self.meta = AudioMetadata.create(self.recording)
+            self.meta.save()
+
+        super(PatchEntry, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('patches:detail', kwargs={'pk': self.id})

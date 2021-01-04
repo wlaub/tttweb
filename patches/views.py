@@ -36,6 +36,16 @@ def get_index_queryset(request):
     return q
 
 
+from django import forms
+
+class FilterForm(forms.Form):
+    min_length = forms.DurationField(widget=forms.TimeInput)
+    max_length = forms.DurationField()
+    min_date = forms.DateField(widget=forms.DateInput)
+    max_date = forms.DateField(widget=forms.SelectDateWidget)
+    order_by = forms.ChoiceField(choices=[('test','date')])
+    ascending = forms.BooleanField()
+
 
 class IndexView(generic.ListView):
     template_name = 'patches/index.html'
@@ -58,22 +68,23 @@ class IndexView(generic.ListView):
         else:
             context['taglist'] = []
 
+        context['filter_form'] = FilterForm()
+
 #        messages.add_message(self.request, messages.INFO, tttcms_tags.format_querystring(self.request.GET))
         return context
 
     def get_queryset(self):
         q = get_index_queryset(self.request)
+        for entry in q: entry.save()
         return q
 
 class MyRSSFeed(Rss201rev2Feed):
     def add_item_elements(self, handler, item):
-#        handler.addQuickElement(u'description', item['description'])
         handler.startElement(u'content:encoded', {})
         handler.startElement(f'![CDATA[{item["description"]}]]', {})
         handler.endElement(u'content:encoded')
         item['description'] = ''
         super(MyRSSFeed, self).add_item_elements(handler, item)
-#        print(item)
 
 class IndexFeed(Feed):
     title = 'New Audio Files'
@@ -128,6 +139,9 @@ class DetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         entry = context['object']
+
+        print('!'*80)
+        print(dir(entry.recording))
 
         #Need all the cases where entry is A
         #Also need all the cases where entry is B and there is no complement
