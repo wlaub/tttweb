@@ -75,7 +75,6 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         q = get_index_queryset(self.request)
-        for entry in q: entry.save()
         return q
 
 class MyRSSFeed(Rss201rev2Feed):
