@@ -94,7 +94,8 @@ class AudioMetadata(models.Model):
         result = cls(**kwargs)
         return result
         
-
+    def __str__(self):
+        return f'Duration: {self.duration}'
 
 class PatchEntry(models.Model):
     name = models.TextField()
@@ -107,7 +108,6 @@ class PatchEntry(models.Model):
 
 
     def __str__(self):
-        print(dir(self.meta.duration))
         return f'Patch Recording - {self.meta.duration} - {self.name}'
 
     def save(self, *args, **kwargs):
