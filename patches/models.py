@@ -93,9 +93,12 @@ class AudioMetadata(models.Model):
         result.refresh(recording)
         return result
 
-    def refresh(self, recording):
+    def refresh(self, recording, loud=False):
         metadata = audiometa.load(recording.path)
         self.duration = datetime.timedelta(seconds=metadata['streaminfo']['duration'])
+        if loud:
+            print(f'New duration: {self.duration}')
+
 
     def __str__(self):
         return f'Duration: {self.duration}'
@@ -117,7 +120,7 @@ class PatchEntry(models.Model):
     def refresh_metadata(cls):
         q = cls.objects.all()
         for entry in q:
-            entry.meta.refresh(entry.recording)
+            entry.meta.refresh(entry.recording, loud=True)
             entry.meta.save()
 
     def save(self, *args, **kwargs):
