@@ -12,6 +12,8 @@ from django.core.files.storage import FileSystemStorage
 
 from easy_thumbnails.fields import ThumbnailerImageField
 
+from licensing.models import Licensed
+
 # Create your models here.
 
 class UniqueFileStorage(FileSystemStorage):
@@ -103,7 +105,7 @@ class AudioMetadata(models.Model):
     def __str__(self):
         return f'Duration: {self.duration}'
 
-class PatchEntry(models.Model):
+class PatchEntry(Licensed):
     name = models.TextField()
     recording = models.FileField(upload_to='patches/recordings/')
     meta = models.ForeignKey(AudioMetadata, null=True, on_delete=models.CASCADE, related_name='source')
@@ -114,7 +116,7 @@ class PatchEntry(models.Model):
 
 
     def __str__(self):
-        return f'Patch Recording - {self.meta.duration} - {self.name}'
+        return f'Audio File - {self.meta.duration} - {self.name}'
 
     @classmethod
     def refresh_metadata(cls):

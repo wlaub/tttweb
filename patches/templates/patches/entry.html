@@ -1,5 +1,5 @@
 
-{% load tttcms_tags thumbnail %}
+{% load tttcms_tags thumbnail licensing_tags%}
 
 <div class="container-fluid entry accordion" id="accordion-{{entry.id}}" {% if collapse %}data-toggle="collapse" data-target="#collapse-{{entry.id}}" {%endif%}>
 
@@ -23,7 +23,16 @@
             <h3 class = "entry-date">
                 {{entry.date}} &#xff5c; {{entry.date|timesince}} ago
             </h3>
+
+            <div class = "ml-auto">
+                <h3>
+                    <i class="openwebicon" title="{{entry.license.name}}">{{entry.license.symbols}}</i>
+                </h3>
             </div>
+
+
+            </div>
+
             {%endif%}
 
             {%if not hide_info%}
