@@ -134,7 +134,8 @@ INSTALLED_APPS = [
     'djangocms_googlemap',
     'djangocms_video',
     'tttweb',
-    'patches.apps.PatchesConfig'
+    'patches.apps.PatchesConfig',
+    'licensing',
 ]
 
 LANGUAGES = (

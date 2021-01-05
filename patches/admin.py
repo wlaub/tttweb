@@ -25,7 +25,7 @@ class RepoInline(admin.TabularInline):
 
 class PatchAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields':['name', 'desc', 'recording', 'date', 'images', 'tags']}),
+        (None, {'fields':['name', 'desc', 'recording', 'date', 'images', 'tags', 'license']}),
         ]
 #    list_display = ['tags']
     autocomplete_fields = ('tags','images')
@@ -86,4 +86,9 @@ admin.site.register(PatchEntry, PatchAdmin)
 admin.site.register(models.BinaryQuestion, BinaryQuestionAdmin)
 admin.site.register(models.BinaryResponseDetail, BinaryResponseDetailAdmin)
 admin.site.register(models.BinaryAnswer, BinaryAnswerAdmin)
+
+from licensing.models import License
+class LicenseAdmin(admin.ModelAdmin):
+    exclude=('',)
+admin.site.register(License, LicenseAdmin)
 
