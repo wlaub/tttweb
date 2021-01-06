@@ -40,8 +40,8 @@
                 {% if entry.authors.all%}
                 {% for author in entry.authors.all %}
                 <a 
-href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' author=author.author.display_name %}">
-                    {{author.author.display_name}}
+href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' author=author.display_name %}">
+                    {{author.display_name}}
                 </a>
                 {% endfor %}
                 {% else %}

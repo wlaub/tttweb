@@ -105,6 +105,15 @@ class AudioMetadata(models.Model):
     def __str__(self):
         return f'Duration: {self.duration}'
 
+class PatchAuthorName(models.Model):
+    display_name = models.TextField()
+    author_image = models.ImageField(null=True)
+    user = models.ForeignKey(User, on_delete = models.CASCADE, related_name='display_name')
+
+    def __str__(self):
+        return f'{self.display_name} AKA {self.user.username}'
+
+
 class PatchEntry(Licensed):
     name = models.TextField()
     recording = models.FileField(upload_to='patches/recordings/')
@@ -113,7 +122,7 @@ class PatchEntry(Licensed):
     desc = models.TextField(null=True)
     tags = models.ManyToManyField(PatchTag, blank=True)
     images = models.ManyToManyField(PatchImages, blank=True)
-
+    authors = models.ManyToManyField(PatchAuthorName)
 
     def __str__(self):
         return f'Audio File - {self.meta.duration} - {self.name}'
@@ -145,24 +154,11 @@ class PatchAttachments(models.Model):
     def filename(self):
         return os.path.basename(self.file.name)
 
-class PatchAuthorName(models.Model):
-    display_name = models.TextField()
-    author_image = models.ImageField(null=True)
-    user = models.ForeignKey(User, on_delete = models.CASCADE, related_name='display_name')
 
-    def __str__(self):
-        return f'{self.display_name} AKA {self.user.username}'
 
 class AuthorLink(models.Model):
     author = models.ForeignKey(PatchAuthorName, on_delete=models.CASCADE, related_name = 'links')
     url = models.URLField()
-
-class PatchAuthor(models.Model):
-    """
-    Authors associated with an entry, 1 or more
-    """
-    entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name='authors')
-    author= models.ForeignKey(PatchAuthorName, on_delete = models.CASCADE)
 
 class PatchRepoAttachment(models.Model):
     """

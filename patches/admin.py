@@ -2,9 +2,9 @@ from django.contrib import admin
 
 from . import models
 from .models import PatchEntry
-class AuthorInline(admin.StackedInline):
-    model = models.PatchAuthor
-    extra = 1
+#class AuthorInline(admin.StackedInline):
+#    model = models.PatchAuthor
+#    extra = 1
 
 class ImageInline(admin.StackedInline):
     model = models.PatchImages
@@ -25,13 +25,14 @@ class RepoInline(admin.TabularInline):
 
 class PatchAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields':['name', 'desc', 'recording', 'date', 'images', 'tags', 'license']}),
+        (None, {'fields':['name', 'desc', 'recording', 'date', 'images', 'tags', 'authors', 'license']}),
         ]
-#    list_display = ['tags']
-    autocomplete_fields = ('tags','images')
-    inlines = [AuthorInline, 
-#            ImageInline, 
-#            TagInline, 
+    autocomplete_fields = (
+        'tags',
+        'images',
+        'authors',
+        )
+    inlines = [
             RepoInline, AttachmentInline,
             ]
 
@@ -52,6 +53,7 @@ class PatchImageAdmin(admin.ModelAdmin):
         ]
 
 class PatchAuthorNameAdmin(admin.ModelAdmin):
+    search_fields =('display_name',)
     fieldsets = [
         (None, {'fields': ['display_name', 'author_image', 'user']})
         ]

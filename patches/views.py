@@ -20,6 +20,20 @@ from tttweb.templatetags import tttcms_tags
 from .models import PatchEntry, PatchAuthorName, BinaryQuestion, PatchTag
 from . import models
 
+from .serializers import PatchEntrySerializer
+
+from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+class PatchEntryAPIList(generics.ListCreateAPIView):
+    queryset = PatchEntry.objects.all()
+    serializer_class = PatchEntrySerializer
+
+class PatchEntryAPIDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PatchEntry.objects.all()
+    serializer_class = PatchEntrySerializer
 
 def get_index_queryset(request):
     order_map = {
@@ -37,7 +51,7 @@ def get_index_queryset(request):
 
     author = request.GET.get('author', False)
     if author:
-        q = q.filter(authors__author__display_name=author)
+        q = q.filter(authors__display_name=author)
     tags = request.GET.get('tags', False)
     if tags:
         taglist = tags.split(',')
