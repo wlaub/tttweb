@@ -84,7 +84,11 @@ href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' tags=tag
         <div class = "col">
         <h3> Description </h3>
         <p>
+        {% if entry.desc %}
         {{entry.desc|render_markdown|safe}}
+        {% else %}
+        No Description
+        {% endif %}
         </p>
 
         <h3> Images </h3>

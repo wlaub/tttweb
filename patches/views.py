@@ -20,20 +20,56 @@ from tttweb.templatetags import tttcms_tags
 from .models import PatchEntry, PatchAuthorName, BinaryQuestion, PatchTag
 from . import models
 
-from .serializers import PatchEntrySerializer
+from .serializers import PatchEntrySerializer,PatchAuthorSerializer
 
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import permissions
+
+class IsAuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
+    def has_object_permission(self, request, view, obj):
+        print(obj.authors.all())
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        if len(obj.authors.all()) == 0:
+            #The object has no authors
+            return True
+       
+        q = obj.authors.filter(user=request.user)
+        if len(q.all()) > 0:
+            return True
+
+        return False
+
 
 class PatchEntryAPIList(generics.ListCreateAPIView):
     queryset = PatchEntry.objects.all()
     serializer_class = PatchEntrySerializer
+    permission_classes=[IsAuthorOrReadOnly]
+
+
+    def perform_create(self, serializer):
+        author = PatchAuthorName.objects.filter(user=self.request.user)
+        #this is the user who created the entry
+        #however authors can be any set of users
+#        print(self.request.POST['authors'])
+#        serializer.save()
 
 class PatchEntryAPIDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = PatchEntry.objects.all()
     serializer_class = PatchEntrySerializer
+    permission_classes=[IsAuthorOrReadOnly]
+
+class PatchAuthorAPIList(generics.ListAPIView):
+    queryset = PatchAuthorName.objects.all()
+    serializer_class = PatchAuthorSerializer
+
+class PatchAuthorAPIDetail(generics.RetrieveAPIView):
+    queryset = PatchAuthorName.objects.all()
+    serializer_class = PatchAuthorSerializer
 
 def get_index_queryset(request):
     order_map = {

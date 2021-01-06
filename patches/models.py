@@ -125,7 +125,10 @@ class PatchEntry(Licensed):
     authors = models.ManyToManyField(PatchAuthorName)
 
     def __str__(self):
-        return f'Audio File - {self.meta.duration} - {self.name}'
+        try:
+            return f'Audio File - {self.meta.duration} - {self.name}'
+        except Exception as e:
+            return f'Error rendering entry name: {e}'
 
     @classmethod
     def refresh_metadata(cls):
@@ -140,7 +143,7 @@ class PatchEntry(Licensed):
         if self.meta == None:
             self.meta = AudioMetadata.create(self.recording)
             self.meta.save()
-            super(PatchEntry, self).save(*args, **kwargs)
+            super(PatchEntry, self).save()
 
     def get_absolute_url(self):
         return reverse('patches:detail', kwargs={'pk': self.id})

@@ -14,6 +14,9 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/entries', views.PatchEntryAPIList.as_view(), name='entry-list-api'),
     path('api/entries/<int:pk>', views.PatchEntryAPIDetail.as_view(), name='entry-api'),   
+    path('api/authors', views.PatchAuthorAPIList.as_view(), name='author-list-api'),
+    path('api/authors/<int:pk>', views.PatchAuthorAPIDetail.as_view(), name='author-api'),   
+
 
 ]
 
