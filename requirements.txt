@@ -8,6 +8,7 @@ Django==3.1.4
 django-classy-tags==2.0.0
 django-cms==3.8.0
 django-filer==2.0.2
+django-filter==2.4.0
 django-formtools==2.2
 django-js-asset==1.2.2
 django-licensing==1.0.4
@@ -27,6 +28,7 @@ djangocms-snippet==3.0.0
 djangocms-style==3.0.0
 djangocms-text-ckeditor==4.0.0
 djangocms-video==3.0.0
+djangorestframework==3.12.2
 easy-thumbnails==2.7.1
 html5lib==1.0.1
 importlib-metadata==3.3.0
