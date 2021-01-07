@@ -34,6 +34,9 @@ class IsAuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
         if request.method in permissions.SAFE_METHODS:
             return True
 
+        result = super(IsAuthorOrReadOnly, self).has_object_permission(request, view, obj)
+        if not result: return False
+
         if len(obj.authors.all()) == 0:
             #The object has no authors
             return True
@@ -41,9 +44,8 @@ class IsAuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
         q = obj.authors.filter(user=request.user)
         if len(q.all()) > 0:
             return True
-
+        
         return False
-
 
 class PatchEntryAPIList(generics.ListCreateAPIView):
     queryset = PatchEntry.objects.all()
@@ -55,8 +57,10 @@ class PatchEntryAPIList(generics.ListCreateAPIView):
         author = PatchAuthorName.objects.filter(user=self.request.user)
         #this is the user who created the entry
         #however authors can be any set of users
-#        print(self.request.POST['authors'])
-#        serializer.save()
+        serializer.is_valid(raise_exception = True)
+
+        serializer.save()
+
 
 class PatchEntryAPIDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = PatchEntry.objects.all()
