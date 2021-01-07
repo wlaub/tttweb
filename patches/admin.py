@@ -25,15 +25,16 @@ class RepoInline(admin.TabularInline):
 
 class PatchAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields':['name', 'desc', 'recording', 'date', 'images', 'tags', 'authors', 'license']}),
+        (None, {'fields':['name', 'desc', 'recording', 'date', 'images', 'tags', 'authors', 'license', 'attachments']}),
         ]
     autocomplete_fields = (
         'tags',
         'images',
         'authors',
+        'attachments',
         )
     inlines = [
-            RepoInline, AttachmentInline,
+            RepoInline,
             ]
 
 class LinkInline(admin.StackedInline):
@@ -51,6 +52,10 @@ class PatchImageAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['image']})
         ]
+
+class PatchAttachAdmin(admin.ModelAdmin):
+    search_fields = ('file',)
+    fields = ['file']
 
 class PatchAuthorNameAdmin(admin.ModelAdmin):
     search_fields =('display_name',)
@@ -82,6 +87,7 @@ class BinaryAnswerAdmin(admin.ModelAdmin):
 admin.site.register(models.PatchAuthorName, PatchAuthorNameAdmin)
 admin.site.register(models.PatchTag, TagAdmin)
 admin.site.register(models.PatchImages, PatchImageAdmin)
+admin.site.register(models.PatchAttachments, PatchAttachAdmin)
 
 admin.site.register(PatchEntry, PatchAdmin)
 
