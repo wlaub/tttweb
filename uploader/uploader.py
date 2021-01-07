@@ -6,6 +6,9 @@ import requests
 import json
 import pprint
 
+sys.path.append('../')
+from patches.utils import generate_checksum
+
 class Uploader():
     """
     For managing all the stuff

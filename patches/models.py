@@ -14,6 +14,8 @@ from easy_thumbnails.fields import ThumbnailerImageField
 
 from licensing.models import Licensed
 
+from .utils import generate_checksum
+
 # Create your models here.
 
 class CaseTextField(models.TextField):
@@ -100,12 +102,6 @@ class UniqueFileStorage(FileSystemStorage):
             return name
         # if the file is new, DO call it
         return super(UniqueFileStorage, self)._save(name, content)
-
-def generate_checksum(fp):
-    md5 = hashlib.md5()
-    for chunk in fp.chunks():
-        md5.update(chunk)
-    return md5.hexdigest()
 
 
 
