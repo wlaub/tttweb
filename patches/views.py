@@ -49,6 +49,7 @@ class IsAuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
         
         return False
 
+
 class PatchEntryAPIVS(viewsets.ModelViewSet):
     queryset = PatchEntry.objects.all()
     serializer_class = PatchEntrySerializer

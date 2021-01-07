@@ -16,8 +16,25 @@ from licensing.models import Licensed
 
 # Create your models here.
 
+class CaseTextField(models.TextField):
+    """
+    case-insensitive text field
+    """
+
+    lookup_map = {
+        'exact': 'iexact',
+        'contains': 'icontains',
+        'startswith': 'istartswith',
+        'endswith': 'iendswith',
+        'regex': 'iregex',
+        }
+
+    def get_lookup(self, name):
+        result = self.lookup_map.get(name, name)
+        return super().get_lookup(result)
+
 class PatchAuthorName(models.Model):
-    display_name = models.TextField()
+    display_name = models.TextField(unique=True)
     author_image = models.ImageField(null=True)
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name='display_name')
 
@@ -34,7 +51,7 @@ class PatchTag(models.Model):
     Tags associated with an entry, 0 or more
     """
 #    entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name='tags')
-    name = models.TextField()
+    name = CaseTextField(unique=True)
     description = models.TextField()
 
     def summary(self):
