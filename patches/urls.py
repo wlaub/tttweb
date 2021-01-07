@@ -10,6 +10,9 @@ app_name = 'patches'
 api_router = DefaultRouter()
 api_router.register('entries', views.PatchEntryAPIVS)
 api_router.register('authors', views.PatchAuthorAPIVS)
+api_router.register('images', views.PatchImageAPIVS)
+api_router.register('attachments', views.PatchAttachAPIVS)
+api_router.register('tags', views.PatchTagAPIVS)
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
