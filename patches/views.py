@@ -61,7 +61,6 @@ class PatchAuthorAPIVS(viewsets.ReadOnlyModelViewSet):
 
 class ChecksumFilter:
      def get_queryset(self):
-        print('ChecksumFilter')
         q = super().get_queryset()
         checksums = self.request.GET.getlist('checksum', None)
         result = q
@@ -88,6 +87,9 @@ class PatchTagAPIVS(viewsets.ModelViewSet):
     queryset = models.PatchTag.objects.all()
     serializer_class = serializers.PatchTagSerializer
     permission_classes=[IsAuthorOrReadOnly]
+
+    def perform_create(self, data):
+        pass
 
     def get_queryset(self):
         q = super().get_queryset()
