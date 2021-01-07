@@ -27,6 +27,29 @@ class Uploader():
         self.auth = auth
         self.data = data
 
+    def post(self, target, dry = True, **kwargs):
+        """
+        Custom post function to work with dry runs
+        """
+        if not 'params' in kwargs.keys():
+            kwargs['params'] = {}
+        kwargs['params'].update({'write':not dry})
+        kwargs['auth'] = self.auth
+        r = requests.post(
+            self.url(target),
+            **kwargs
+            )
+        return r
+
+    def dry_run(self):
+        """
+        Dry run test of uploading parts
+        """
+        print('Doing dry run:')
+        create_tags=[{'name':'ghost tag', 'description':'it is a ghost'}]
+        r = self.post('tags', dry=True, data=create_tags[0])
+        print(r.text)       
+ 
 
     def upload(self):
         """
@@ -36,6 +59,7 @@ class Uploader():
         valid_data['tags'] = []
         valid_data['images'] = []
         valid_data['attachments'] = []
+        valid_data['recording'] = None
 
         #convert repo attachments to data for transfer
         try:
@@ -51,7 +75,18 @@ class Uploader():
         #add to valid data
         valid_data['tags'] = list(map(lambda x: x['id'], found_tags))
 
+        self.get_attachments()
+
         print(valid_data)
+
+    def get_attachments(self, attachments = None):
+        if attachments == None:
+            attachments = self.data['attachments']
+        hashmap = {}
+        for filename in attachments:
+            with open(filename, 'rb') as fp:
+                checksum = generate_checksum(fp)
+            
 
     def get_tags(self, tags= None):
         """
@@ -88,7 +123,7 @@ class Uploader():
             fixed_tags.extend(fixed)
 
         for create in create_tags:
-            r = requests.post(self.url('tags'), data = create, auth=self.auth)
+            r = self.post('tags', dry=False, data = create)
             obj = r.json()
             if r.status_code == 201:
                 print(f'Created tag: {obj["name"]}')

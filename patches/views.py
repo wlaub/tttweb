@@ -49,13 +49,25 @@ class IsAuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
         
         return False
 
+class APIDryRun:
+    """
+    Requires write==True passed to params to actually save
+    """
+    def perform_create(self, serializer):
+        do_write = self.request.GET.get('write', False)
+        if do_write.lower()=='true':
+            super().perform_create(serializer)
+        else:
+            print(f'Skipped create on {serializer.data}')
 
-class PatchEntryAPIVS(viewsets.ModelViewSet):
+   
+
+class PatchEntryAPIVS(APIDryRun, viewsets.ModelViewSet):
     queryset = PatchEntry.objects.all()
     serializer_class = PatchEntrySerializer
     permission_classes=[IsAuthorOrReadOnly]
 
-class PatchAuthorAPIVS(viewsets.ReadOnlyModelViewSet):
+class PatchAuthorAPIVS(APIDryRun, viewsets.ReadOnlyModelViewSet):
     queryset = PatchAuthorName.objects.all()
     serializer_class = PatchAuthorSerializer
 
@@ -71,25 +83,20 @@ class ChecksumFilter:
 
         return result
 
-class PatchImageAPIVS(ChecksumFilter, viewsets.ModelViewSet):
+class PatchImageAPIVS(ChecksumFilter, APIDryRun, viewsets.ModelViewSet):
     queryset = models.PatchImages.objects.all()
     serializer_class = serializers.PatchImageSerializer
     permission_classes=[IsAuthorOrReadOnly]
 
-class PatchAttachAPIVS(ChecksumFilter, viewsets.ModelViewSet):
+class PatchAttachAPIVS(ChecksumFilter, APIDryRun, viewsets.ModelViewSet):
     queryset = models.PatchAttachments.objects.all()
     serializer_class = serializers.PatchAttachSerializer
     permission_classes=[IsAuthorOrReadOnly]
 
-
-
-class PatchTagAPIVS(viewsets.ModelViewSet):
+class PatchTagAPIVS(APIDryRun, viewsets.ModelViewSet):
     queryset = models.PatchTag.objects.all()
     serializer_class = serializers.PatchTagSerializer
     permission_classes=[IsAuthorOrReadOnly]
-
-    def perform_create(self, data):
-        pass
 
     def get_queryset(self):
         q = super().get_queryset()
@@ -101,7 +108,6 @@ class PatchTagAPIVS(viewsets.ModelViewSet):
                 result|=q.filter(name=name)
 
         return result
-
 
 
 def get_index_queryset(request):
