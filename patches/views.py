@@ -74,12 +74,15 @@ class PatchAuthorAPIVS(APIDryRun, viewsets.ReadOnlyModelViewSet):
 class ChecksumFilter:
      def get_queryset(self):
         q = super().get_queryset()
-        checksums = self.request.GET.getlist('checksum', None)
+        checksums = self.request.GET.getlist('checksums', None)
         result = q
         if checksums:
             result = q.none()
             for checksum in checksums:
                 result|=q.filter(checksum=checksum)
+
+        print('!!!')
+        print(checksums)
 
         return result
 

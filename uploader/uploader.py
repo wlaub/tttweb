@@ -9,6 +9,8 @@ import pprint
 sys.path.append('../')
 from patches.utils import generate_checksum
 
+from django.core import files
+
 class Uploader():
     """
     For managing all the stuff
@@ -39,6 +41,10 @@ class Uploader():
             self.url(target),
             **kwargs
             )
+        return r
+
+    def get(self, target, **kwargs):
+        r = requests.get(self.url(target), **kwargs)
         return r
 
     def dry_run(self):
@@ -75,30 +81,55 @@ class Uploader():
         #add to valid data
         valid_data['tags'] = list(map(lambda x: x['id'], found_tags))
 
-        self.get_attachments()
+        self.get_files('attachments', self.data['attachments'])
+
+        self.get_files('images', self.data['images'])
 
         print(valid_data)
 
-    def get_attachments(self, attachments = None):
-        if attachments == None:
-            attachments = self.data['attachments']
+
+    def get_files(self, target, filenames):
+        """
+        Identify existing unique files by checksum. Can be used
+        for both images and attachments
+        """
+        if len(filenames) == 0:
+            return [],[]
+
         hashmap = {}
-        for filename in attachments:
+        for filename in filenames:
             with open(filename, 'rb') as fp:
-                checksum = generate_checksum(fp)
-            
+                f = files.File(fp)
+                checksum = generate_checksum(f)
+                hashmap[checksum] = filename
+        hashes = list(hashmap.keys())
+        r = self.get(target, params={'checksums':hashes})
+        found_files = r.json()
+        found_names =list(map(lambda x: hashmap[x['checksum']], found_files))
+        missing_files = []
+        for filename in filenames:
+            if not filename in found_names:
+                missing_files.append(filename)
+
+        print(target)
+        print(found_files)
+        print(missing_files)
+        print('-'*80)
+
+        return found_files, missing_files
+ 
 
     def get_tags(self, tags= None):
         """
-        Retrieve the pk's for all of the tags in this entry
+        Find all existing tags matching the names in tags
         Return found_tags, missing_tags
         found_tags = list of tag dictionaries
         missing_tags = list of tab names not found
         """
         if tags == None:
             tags = self.data['tags']
-        r = requests.get(self.url('tags'), params = {'name':tags})
-        found_tags = json.loads(r.text)
+        r = self.get('tags', params = {'name': tags})
+        found_tags = r.json()
         found_names = list(map(lambda x: x['name'].lower(), found_tags))
         missing_tags = []
         for tag in tags:
