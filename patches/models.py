@@ -140,7 +140,7 @@ class PatchAttachments(models.Model):
 
     def save(self, *args, **kwargs):
         self.checksum = generate_checksum(self.file)
-        super(PatchImages, self).save(*args, **kwargs)
+        super(PatchAttachments, self).save(*args, **kwargs)
 
     def filename(self):
         return os.path.basename(self.file.name)
