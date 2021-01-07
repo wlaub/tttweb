@@ -64,9 +64,11 @@ class ChecksumFilter:
         print('ChecksumFilter')
         q = super().get_queryset()
         checksums = self.request.GET.getlist('checksum', None)
-        result = q.none()
-        for checksum in checksums:
-            result|=q.filter(checksum=checksum)
+        result = q
+        if checksums:
+            result = q.none()
+            for checksum in checksums:
+                result|=q.filter(checksum=checksum)
 
         return result
 
@@ -90,9 +92,11 @@ class PatchTagAPIVS(viewsets.ModelViewSet):
     def get_queryset(self):
         q = super().get_queryset()
         names = self.request.GET.getlist('name', None)
-        result = q.none()
-        for name in names:
-            result|=q.filter(name=name)
+        result = q
+        if names:
+            result = q.none()
+            for name in names:
+                result|=q.filter(name=name)
 
         return result
 
