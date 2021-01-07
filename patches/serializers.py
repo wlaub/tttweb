@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import PatchEntry, PatchAuthorName
 from . import models
+from . import utils
 import json
 
 class JsonListSer(serializers. ListSerializer):
@@ -58,9 +59,21 @@ class PatchEntrySerializer(serializers.ModelSerializer):
 
     repo_attachments = RepoAttachSerializer(many=True, read_only=False)
 
+    extra_images=serializers.ListField(child=serializers.FileField())
+
     class Meta:
         model = PatchEntry
         exclude = []
+
+    def validate_extra_images(self, data):
+        print('***')
+        print(utils.generate_checksum(data[0])) 
+        checksums = {utils.generate_checksum(fp):fp for fp in data}
+        q = models.PatchImages.objects.filter(checksum__in=checksums.keys())
+        if q.count() != 0:
+            bad_files = [checksums[x.checksum].name for x in q.all()]
+            raise serializers.ValidationError(f'files {bad_files} conflict with existing file checksums')
+        return data
 
     def create(self, validated_data):
         repos = validated_data.pop('repo_attachments')
