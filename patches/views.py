@@ -59,20 +59,42 @@ class PatchAuthorAPIVS(viewsets.ReadOnlyModelViewSet):
     queryset = PatchAuthorName.objects.all()
     serializer_class = PatchAuthorSerializer
 
-class PatchImageAPIVS(viewsets.ModelViewSet):
+class ChecksumFilter:
+     def get_queryset(self):
+        print('ChecksumFilter')
+        q = super().get_queryset()
+        checksums = self.request.GET.getlist('checksum', None)
+        result = q.none()
+        for checksum in checksums:
+            result|=q.filter(checksum=checksum)
+
+        return result
+
+class PatchImageAPIVS(ChecksumFilter, viewsets.ModelViewSet):
     queryset = models.PatchImages.objects.all()
     serializer_class = serializers.PatchImageSerializer
     permission_classes=[IsAuthorOrReadOnly]
 
-class PatchAttachAPIVS(viewsets.ModelViewSet):
+class PatchAttachAPIVS(ChecksumFilter, viewsets.ModelViewSet):
     queryset = models.PatchAttachments.objects.all()
     serializer_class = serializers.PatchAttachSerializer
     permission_classes=[IsAuthorOrReadOnly]
+
+
 
 class PatchTagAPIVS(viewsets.ModelViewSet):
     queryset = models.PatchTag.objects.all()
     serializer_class = serializers.PatchTagSerializer
     permission_classes=[IsAuthorOrReadOnly]
+
+    def get_queryset(self):
+        q = super().get_queryset()
+        names = self.request.GET.getlist('name', None)
+        result = q.none()
+        for name in names:
+            result|=q.filter(name=name)
+
+        return result
 
 
 
