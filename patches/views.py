@@ -21,6 +21,7 @@ from .models import PatchEntry, PatchAuthorName, BinaryQuestion, PatchTag
 from . import models
 
 from .serializers import PatchEntrySerializer,PatchAuthorSerializer
+from . import serializers
 
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -56,6 +57,21 @@ class PatchEntryAPIVS(viewsets.ModelViewSet):
 class PatchAuthorAPIVS(viewsets.ReadOnlyModelViewSet):
     queryset = PatchAuthorName.objects.all()
     serializer_class = PatchAuthorSerializer
+
+class PatchImageAPIVS(viewsets.ModelViewSet):
+    queryset = models.PatchImages.objects.all()
+    serializer_class = serializers.PatchImageSerializer
+    permission_classes=[IsAuthorOrReadOnly]
+
+class PatchAttachAPIVS(viewsets.ModelViewSet):
+    queryset = models.PatchAttachments.objects.all()
+    serializer_class = serializers.PatchAttachSerializer
+    permission_classes=[IsAuthorOrReadOnly]
+
+class PatchTagAPIVS(viewsets.ModelViewSet):
+    queryset = models.PatchTag.objects.all()
+    serializer_class = serializers.PatchTagSerializer
+    permission_classes=[IsAuthorOrReadOnly]
 
 
 

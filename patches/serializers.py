@@ -12,8 +12,6 @@ class JsonListSer(serializers. ListSerializer):
         result = json.loads(result)
         return result
 
-
-
 class PatchAuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -25,6 +23,23 @@ class RepoAttachSerializer(serializers.ModelSerializer):
         model = models.PatchRepoAttachment
         list_serializer_class = JsonListSer
         exclude=['entry']
+
+class PatchImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PatchImages
+        fields = '__all__'
+
+class PatchAttachSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PatchAttachments
+        fields = '__all__'
+
+class PatchTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PatchTag
+        fields = '__all__'
+
+
 
 class PatchEntrySerializer(serializers.ModelSerializer):
     authors = serializers.SlugRelatedField(
