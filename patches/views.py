@@ -27,6 +27,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
+from rest_framework import viewsets
 
 class IsAuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
     def has_object_permission(self, request, view, obj):
@@ -47,33 +48,16 @@ class IsAuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
         
         return False
 
-class PatchEntryAPIList(generics.ListCreateAPIView):
+class PatchEntryAPIVS(viewsets.ModelViewSet):
     queryset = PatchEntry.objects.all()
     serializer_class = PatchEntrySerializer
     permission_classes=[IsAuthorOrReadOnly]
 
-
-    def perform_create(self, serializer):
-        author = PatchAuthorName.objects.filter(user=self.request.user)
-        #this is the user who created the entry
-        #however authors can be any set of users
-        serializer.is_valid(raise_exception = True)
-
-        serializer.save()
-
-
-class PatchEntryAPIDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = PatchEntry.objects.all()
-    serializer_class = PatchEntrySerializer
-    permission_classes=[IsAuthorOrReadOnly]
-
-class PatchAuthorAPIList(generics.ListAPIView):
+class PatchAuthorAPIVS(viewsets.ReadOnlyModelViewSet):
     queryset = PatchAuthorName.objects.all()
     serializer_class = PatchAuthorSerializer
 
-class PatchAuthorAPIDetail(generics.RetrieveAPIView):
-    queryset = PatchAuthorName.objects.all()
-    serializer_class = PatchAuthorSerializer
+
 
 def get_index_queryset(request):
     order_map = {

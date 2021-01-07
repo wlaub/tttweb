@@ -1,8 +1,16 @@
 from django.urls import path, include
 
+from rest_framework.routers import DefaultRouter
+
 from . import views
 
 app_name = 'patches'
+
+
+api_router = DefaultRouter()
+api_router.register('entries', views.PatchEntryAPIVS)
+api_router.register('authors', views.PatchAuthorAPIVS)
+
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('rss/', views.IndexFeed(), name='rss'),
@@ -12,10 +20,7 @@ urlpatterns = [
     path('tags/', views.TagView.as_view(), name='tags'),
 
     path('api-auth/', include('rest_framework.urls')),
-    path('api/entries/', views.PatchEntryAPIList.as_view(), name='entry-list-api'),
-    path('api/entries/<int:pk>', views.PatchEntryAPIDetail.as_view(), name='entry-api'),   
-    path('api/authors/', views.PatchAuthorAPIList.as_view(), name='author-list-api'),
-    path('api/authors/<int:pk>', views.PatchAuthorAPIDetail.as_view(), name='author-api'),   
+    path('api/', include(api_router.urls)),
 
 
 ]
