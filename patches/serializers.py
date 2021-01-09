@@ -43,6 +43,10 @@ class PatchTagSerializer(serializers.ModelSerializer):
 
 
 class PatchEntrySerializer(serializers.ModelSerializer):
+    """
+    Pass pk's for existing objects. To create new objects, pass to
+    corresponding extra_field.
+    """
     authors = serializers.SlugRelatedField(
         many=True, 
         slug_field='display_name',

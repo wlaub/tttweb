@@ -148,6 +148,10 @@ border-right: 1px solid black;
 .entry:hover {
 	background-color: #dddddd;
 }
+.entry h3{
+    white-space: nowrap;
+    overflow:hidden;
+}
 .entry-date {
 	font-size: 0.75rem;
 	padding-top: 1rem;

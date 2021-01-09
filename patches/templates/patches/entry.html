@@ -11,10 +11,10 @@
             </a>
         {% endif %}  
 
-        <div class = "col" style="">
+        <div class = "col" style="overflow:hidden;">
 
             {%if not hide_info%}
-            <div class = "row">
+            <div class = "row" style="flex-wrap:nowrap;">
             <h3>
                  <a href = {% url 'patches:detail' entry.id %}>               
                 {{entry.name}}
