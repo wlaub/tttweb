@@ -233,7 +233,7 @@ class IndexFeed(Feed):
         return [Enclosure(url=url, length=length, mime_type=mime_type)]
 
     def item_author_name(self, item):
-        return ', '.join(map(lambda x: x.author.display_name, item.authors.all()))
+        return ', '.join(map(lambda x: x.display_name, item.authors.all()))
 
     def item_pubdate(self, item):
         return item.date
