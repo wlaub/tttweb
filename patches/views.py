@@ -55,11 +55,11 @@ class APIDryRun:
     """
     def perform_create(self, serializer):
         do_write = self.request.GET.get('write', 'False')
-        print(self.request.POST)
-        print(serializer.data)
         if do_write.lower()=='true':
             super().perform_create(serializer)
         else:
+            print(self.request.POST)
+            print(serializer.data)
             print(f'Skipped create on {serializer.data}')
 
    
