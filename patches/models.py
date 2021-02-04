@@ -18,7 +18,7 @@ from .utils import generate_checksum
 
 # Create your models here.
 
-class CaseTextField(models.TextField):
+class CaseTextField(models.CharField):
     """
     case-insensitive text field
     """
@@ -53,7 +53,7 @@ class PatchTag(models.Model):
     Tags associated with an entry, 0 or more
     """
 #    entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name='tags')
-    name = CaseTextField(unique=True)
+    name = CaseTextField(max_length = 512, unique=True)
     description = models.TextField()
 
     def summary(self):
