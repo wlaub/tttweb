@@ -36,7 +36,7 @@ class CaseTextField(models.TextField):
         return super().get_lookup(result)
 
 class PatchAuthorName(models.Model):
-    display_name = models.TextField(unique=True)
+    display_name = models.CharField(max_length = 512, unique=True)
     author_image = models.ImageField(null=True)
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name='display_name')
 
