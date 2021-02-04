@@ -14,20 +14,52 @@ from django.core import files
 class Uploader():
     """
     For managing all the stuff
+
+    the data dictionary you need to give it is of the form:
+    {
+    'recording': audio filename,
+    'name': 'Entry title',
+    'date': '2000-04-20T04:20:00' #strf %Y-%m-%dT%H:%M:%S 
+    'authors' [list of display names],
+    'license': the license number,
+    'tags': [list of tag names],
+    'repo_attachments': [
+        {'repo': url, 'commit':commit checksum, 'filename':filename },
+        ],
+    'images': [list of filenames],
+    'attachments': [list of filenames]
+    }
+
+    License numbers:
+    1 All rights reserved
+    2 Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported
+    3 Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
+    4 Creative Commons Attribution-NoDerivs 3.0 Unported
+    5 Creative Commons Attribution-NonCommercial 3.0 Unported
+    6 Creative Commons Attribution-ShareAlike 3.0 Unported
+    7 Creative Commons Attribution 3.0 Unported
+    8 Public Domain
+
     """
 
     def url(self, name):
         return self.base_url+'api/'+name+'/'
 
-    def __init__(self, base_url, data, auth):
+    def __init__(self, base_url, data, auth, tag_resolution='ask'):
         """
         base_url is e.g. techtech.technologies/en/audio/
         data is a dictionary of the new entry to create
         auth is the requests authentication object
+        tag_resolution is the method for dealing with new tags
+            * ask: interactively ask the user to resolve each tag. This is the default
+            * ignore: discard any tags that don't already exist
         """
         self.base_url = base_url
         self.auth = auth
         self.data = data
+        if not tag_resolution.lower() in ['ask', 'ignore']:
+            raise ValueError(f'Invalid tag resolution strategy - {tag_resolution}')
+        self.tag_resolution = tag_resolution.lower()
 
     def post(self, target, dry = True, **kwargs):
         """
@@ -51,21 +83,32 @@ class Uploader():
         """
         Dry run test of uploading parts
         """
+        print('*'*60)
         print('Doing dry run:')
         create_tags=[{'name':'ghost tag', 'description':'it is a ghost'}]
         r = self.post('tags', dry=True, data=create_tags[0])
+        print('Created new tag ghost tag. API returned:')
+        print(r.text)
+
+        create_tags=[{'name':'bad tag', 'description':'it is a ghost'}]
+        r = self.post('tags', dry=True, data=create_tags[0])
+        print('Tried to create bad tag. API returned:')
         print(r.text)       
- 
+
+        print('Dry run finished.') 
+        print('*'*60)
 
     def upload(self):
         """
         Do upload of self
         """
         valid_data = copy.deepcopy(self.data)
+        valid_files = []
         valid_data['tags'] = []
         valid_data['images'] = []
         valid_data['attachments'] = []
-        valid_data['recording'] = None
+
+        valid_files.append(('recording', open(self.data['recording'], 'rb')))
 
         #convert repo attachments to data for transfer
         try:
@@ -75,17 +118,30 @@ class Uploader():
 
         #Get PK's of all tags and add missing tags as needed
         found_tags, missing_tags = self.get_tags()
-        fixed_tags = self.handle_missing_tags(missing_tags)
-        found_tags.extend(fixed_tags)
+        if self.tag_resolution == 'ask':
+            fixed_tags = self.handle_missing_tags(missing_tags)
+            found_tags.extend(fixed_tags)
+        elif self.tag_resolution == 'ignore':
+            print(f'Ignoring missing tags {missing_tags}')
 
         #add to valid data
-        valid_data['tags'] = list(map(lambda x: x['id'], found_tags))
+        valid_data['tags'] = list(map(lambda x: x['name'], found_tags))
 
-        self.get_files('attachments', self.data['attachments'])
+        #Determine new and existing images
+        found_images, missing_images = self.get_files('images', self.data['images'])
+        valid_data['images'] = [x['id'] for x in found_images]
+        for filename in missing_images:
+            valid_files.append(('extra_images', open(filename, 'rb'))) 
+        
 
-        self.get_files('images', self.data['images'])
-
-        print(valid_data)
+        #Determine new and existing file attachments
+        found_att, missing_att = self.get_files('attachments', self.data['attachments'])
+        valid_data['attachments'] = [x['id'] for x in found_att]
+        for filename in missing_att:
+            valid_files.append(('extra_attachments', open(filename, 'rb'))) 
+       
+        r = self.post('entries', dry=False, data=valid_data, files=valid_files)
+        print(r.text)
 
 
     def get_files(self, target, filenames):
