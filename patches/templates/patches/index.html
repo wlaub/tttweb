@@ -21,6 +21,11 @@ Audio Files
 
                 <div>
                 <h2>{{author.display_name}}</h2>
+                {% if author.bio %}
+                {{ author.bio|render_markdown|safe }}
+                {% endif %}
+
+
                 <h3>External Links</h3>
                 {% if author.links %}
                 <ul>
@@ -33,7 +38,9 @@ Audio Files
                 {% endif %}
                 </div>
             </div>
+
         {% endif %}
+
     </div>
 
     {% include "patches/pages.html" %}

@@ -35,9 +35,11 @@ class CaseTextField(models.CharField):
         result = self.lookup_map.get(name, name)
         return super().get_lookup(result)
 
+
 class PatchAuthorName(models.Model):
     display_name = models.CharField(max_length = 512, unique=True)
     author_image = models.ImageField(null=True)
+    bio = models.TextField(blank=True)
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name='display_name')
 
     def __str__(self):
@@ -151,7 +153,7 @@ class PatchEntry(Licensed):
     recording = models.FileField(upload_to='patches/recordings/')
     meta = models.ForeignKey(AudioMetadata, null=True, on_delete=models.CASCADE, related_name='source')
     date = models.DateTimeField()
-    desc = models.TextField(null=True)
+    desc = models.TextField(null=True, blank=True)
     tags = models.ManyToManyField(PatchTag, blank=True)
     images = models.ManyToManyField(PatchImages, blank=True)
     authors = models.ManyToManyField(PatchAuthorName)
