@@ -60,7 +60,7 @@ class PatchAttachAdmin(admin.ModelAdmin):
 class PatchAuthorNameAdmin(admin.ModelAdmin):
     search_fields =('display_name',)
     fieldsets = [
-        (None, {'fields': ['display_name', 'author_image', 'user']})
+        (None, {'fields': ['display_name', 'bio', 'author_image', 'user']})
         ]
     inlines = [LinkInline]
 
