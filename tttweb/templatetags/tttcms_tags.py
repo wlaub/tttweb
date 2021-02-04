@@ -11,6 +11,7 @@ def is_expanded(value):
 
 @register.filter(name='render_markdown')
 def render_markdown(value):
+    if value == None: return ''
     md = markdown.Markdown(extensions=['extra', 'sane_lists', 'nl2br'])
     return md.convert(value)
 
