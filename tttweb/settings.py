@@ -25,10 +25,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from .secret_configs import *
 # SECURITY WARNING: keep the secret key used in production secret!
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-
 # Application definition
 
 ROOT_URLCONF = 'tttweb.urls'
