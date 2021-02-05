@@ -69,8 +69,9 @@
                 "sidebar content"        
         }
         .header{
-            grid-area: header; display:grid;
-            padding-left: 10px;
+            grid-area: header; 
+            display:inline-flex;
+            padding-left: 0.5em;
             font-family: CMU;
         }
         .header a{text-decoration:none; color: black;}
@@ -147,9 +148,17 @@
             
             </ul>
         </div>
-        <div class="header">
+        <div class="header" style="display:inline-flex;">
+
+        <div style = "display:block;height:8em">
+        <img src = "{% static 'ttt420.png' %}" 
+style = "height:calc(100% - 0.5em);margin-top:0.25em;"/>
+        </div>
+        <div>
         <h1><a href = "{% page_url "home" %}">TechTech Technologies</a></h1>
-        <h2>{% page_attribute "page_title" %}</h2>
+        <h2 style="margin-left:-0.5em">{% page_attribute "page_title" %}</h2>
+        </div>
+
         </div>
         <div class="container">
                {% block content %}{% endblock content %}
