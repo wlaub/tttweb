@@ -41,6 +41,13 @@
         .child.descendant a:link{color: white;}
         .child.descendant a:visited{color:white;}
 
+        a {
+        color: #ff00ff;
+        }
+        a:visited {
+        color: #880088;
+        }
+
         .content {
             float: left;
             width: 80%;
@@ -48,6 +55,7 @@
             padding-right:0.5em;
             word-wrap:anywhere;
         }
+
         .sidebar {
             float: left;
             padding-left:0.5em;
@@ -150,13 +158,21 @@
         </div>
         <div class="header">
 
-        <div style = "background-color:#8888ff;display:contents;">
-        <img src = "{% static 'tttlogo_reduced.svg' %}" 
-            style = "height:calc(100% - 0.5em);margin-top:0.25em;"/>
+        <div style = "display:contents;">
+            <a href = "{% page_url "home" %}" style="display:contents;">
+            <img src = "{% static 'tttlogo_reduced.svg' %}" 
+                style = "height:calc(100% - 0.5em);margin-top:0.25em;"/>
+            </a>
         </div>
+
         <div>
+        {% if false %}
+        <!-- This is where the section parent link and title will go one day -->
+        {% else %}
         <h1><a href = "{% page_url "home" %}">TechTech Technologies</a></h1>
-        <h2 style="margin-left:-0.5em">{% page_attribute "page_title" %}</h2>
+        {% endif %}
+
+        <h2 style="margin-left:-0.5em">{% page_attribute "title" %}</h2>
         </div>
 
         </div>
