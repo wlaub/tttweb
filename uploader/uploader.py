@@ -66,9 +66,7 @@ class Uploader():
         """
         Custom post function to work with dry runs
         """
-        if not 'params' in kwargs.keys():
-            kwargs['params'] = {}
-        kwargs['params'].update({'write':not dry})
+        kwargs['data']['write'] = not dry
         kwargs['auth'] = self.auth
         r = requests.post(
             self.url(target),

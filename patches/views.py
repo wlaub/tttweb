@@ -51,10 +51,10 @@ class IsAuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
 
 class APIDryRun:
     """
-    Requires write==True passed to params to actually save
+    Requires write==True passed as part of data to actually save
     """
     def perform_create(self, serializer):
-        do_write = self.request.GET.get('write', 'False')
+        do_write = self.request.POST.get('write', 'False')
         if do_write.lower()=='true':
             super().perform_create(serializer)
         else:
