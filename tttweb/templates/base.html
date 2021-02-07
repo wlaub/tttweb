@@ -71,6 +71,7 @@
         .header{
             grid-area: header; 
             display:inline-flex;
+            flex-direction: row;
             padding-left: 0.5em;
             font-family: CMU;
         }
@@ -80,6 +81,7 @@
             margin-bottom: 0px;
             font-size: 72px;
             font-weight: normal;
+     height: 1.5em;
         }
         .header h2 {
             margin-top: 0px;
@@ -132,8 +134,6 @@
         .nospando::before{
             visibility: hidden;
         }
-
-
         </style>
         {% render_block "css" %}
     </head>
@@ -150,8 +150,8 @@
         </div>
         <div class="header">
 
-        <div style = "display:block;height:8em">
-        <img src = "{% static 'ttt420.png' %}" 
+        <div style = "background-color:#8888ff;display:contents;">
+        <img src = "{% static 'tttlogo_reduced.svg' %}" 
             style = "height:calc(100% - 0.5em);margin-top:0.25em;"/>
         </div>
         <div>
