@@ -23,6 +23,7 @@ class Uploader():
     'authors' [list of display names],
     'license': the license number,
     'tags': [list of tag names],
+    'desc': 'The entry description',
     'repo_attachments': [
         {'repo': url, 'commit':commit checksum, 'filename':filename },
         ],
@@ -110,6 +111,13 @@ class Uploader():
 
         valid_files.append(('recording', open(self.data['recording'], 'rb')))
 
+        #convert dates
+
+        initial_time = self.data['date']
+        if isinstance(initial_time, float):
+            timestr = time.strftime('%Y-%m-%dT%H:%M:%S', time.gmtime(initial_time))
+            valid_data['date'] = timestr
+
         #convert repo attachments to data for transfer
         try:
             valid_data['repo_attachments'] = json.dumps(self.data['repo_attachments'])
@@ -139,9 +147,12 @@ class Uploader():
         valid_data['attachments'] = [x['id'] for x in found_att]
         for filename in missing_att:
             valid_files.append(('extra_attachments', open(filename, 'rb'))) 
-       
+      
+        print('Uploading Data:')
+        print(valid_data) 
         r = self.post('entries', dry=False, data=valid_data, files=valid_files)
-        print(r.text)
+        print('\nResponse Received:')
+        print(r.text.replace('\n', ' '))
 
 
     def get_files(self, target, filenames):
@@ -189,7 +200,7 @@ class Uploader():
         found_names = list(map(lambda x: x['name'].lower(), found_tags))
         missing_tags = []
         for tag in tags:
-            if not tag in found_names:
+            if not tag.lower() in found_names:
                 missing_tags.append(tag)
         return found_tags, missing_tags
 

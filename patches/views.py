@@ -110,7 +110,7 @@ class PatchTagAPIVS(APIDryRun, viewsets.ModelViewSet):
         if names:
             result = q.none()
             for name in names:
-                result|=q.filter(name=name)
+                result|=q.filter(name__iexact=name)
 
         return result
 
