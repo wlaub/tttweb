@@ -116,7 +116,7 @@ class Uploader():
 
         initial_time = self.data['date']
         if isinstance(initial_time, float):
-            timestr = time.strftime('%Y-%m-%dT%H:%M:%S', time.gmtime(initial_time))
+            timestr = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime(initial_time))
             valid_data['date'] = timestr
 
         #convert repo attachments to data for transfer
