@@ -2,6 +2,8 @@ import sys
 import time, datetime
 import copy
 
+from posixpath import join as urljoin
+
 import requests
 import json
 import pprint
@@ -44,7 +46,8 @@ class Uploader():
     """
 
     def url(self, name):
-        return self.base_url+'api/'+name+'/'
+        result = urljoin(self.base_url,'api', name)+'/'
+        return result
 
     def __init__(self, base_url, data, auth, tag_resolution='ask'):
         """
@@ -134,17 +137,19 @@ class Uploader():
         valid_data['tags'] = list(map(lambda x: x['name'], found_tags))
 
         #Determine new and existing images
-        found_images, missing_images = self.get_files('images', self.data['images'])
-        valid_data['images'] = [x['id'] for x in found_images]
-        for filename in missing_images:
-            valid_files.append(('extra_images', open(filename, 'rb'))) 
+        if 'images' in self.data.keys():
+            found_images, missing_images = self.get_files('images', self.data['images'])
+            valid_data['images'] = [x['id'] for x in found_images]
+            for filename in missing_images:
+                valid_files.append(('extra_images', open(filename, 'rb'))) 
         
 
         #Determine new and existing file attachments
-        found_att, missing_att = self.get_files('attachments', self.data['attachments'])
-        valid_data['attachments'] = [x['id'] for x in found_att]
-        for filename in missing_att:
-            valid_files.append(('extra_attachments', open(filename, 'rb'))) 
+        if 'attachments' in self.data.keys():
+            found_att, missing_att = self.get_files('attachments', self.data['attachments'])
+            valid_data['attachments'] = [x['id'] for x in found_att]
+            for filename in missing_att:
+                valid_files.append(('extra_attachments', open(filename, 'rb'))) 
       
         print('Uploading Data:')
         print(valid_data) 
