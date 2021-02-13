@@ -63,7 +63,7 @@ href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' author=a
             <a 
 href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' tags=tag.name%}"
                 class="tooltiplink{%if tag.name in taglist%} tag-selected{%endif%}">
-                {{tag.name}}<div class="tooltiptext">{{tag.name}}: {{tag.summary}}</div>
+                {{tag.name}}<div class="tooltiptext">{{tag.name}}: {{tag.summary|render_markdown|striptags}}</div>
             </a>
             {% if not forloop.last%}<div class="tagdiv"></div>{% endif %}
             {% endfor %}
