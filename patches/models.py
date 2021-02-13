@@ -106,11 +106,10 @@ class UniqueFileStorage(FileSystemStorage):
         return super(UniqueFileStorage, self)._save(name, content)
 
 
-
 def unique_file_name(instance, filename):
     checksum = instance.checksum
     basename, ext = os.path.splitext(filename)
-    return os.path.join('patches/images', f'{basename}_{checksum}{ext}')
+    return os.path.join(instance.unique_filepath, f'{basename}_{checksum}{ext}')
 
 
 class PatchImages(models.Model):
@@ -121,7 +120,8 @@ class PatchImages(models.Model):
 #    image = models.ImageField(upload_to=unique_file_name, storage=UniqueFileStorage)
     image = ThumbnailerImageField(upload_to=unique_file_name, storage=UniqueFileStorage)
     checksum = models.CharField(max_length=36, unique=True, null=True)
-    
+   
+    unique_filepath = 'patches/images'
 
     def save(self, *args, **kwargs):
         self.checksum = generate_checksum(self.image.file)
@@ -137,8 +137,10 @@ class PatchAttachments(models.Model):
     """
     Generic files attached to an entry, 0 or more
     """
-    file = models.FileField(upload_to='patches/attachements/', storage=UniqueFileStorage)
+    file = models.FileField(upload_to=unique_file_name, storage=UniqueFileStorage)
     checksum = models.CharField(max_length=36, unique=True, null=True)
+
+    unique_filepath = 'patches/attachements/'
 
     def save(self, *args, **kwargs):
         self.checksum = generate_checksum(self.file)
