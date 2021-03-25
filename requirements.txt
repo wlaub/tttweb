@@ -52,7 +52,7 @@ tbm-utils==2.6.0
 typing-extensions==3.7.4.3
 tzlocal==1.5.1
 Unidecode==1.0.23
-urllib3==1.26.2
+urllib3==1.26.3
 webencodings==0.5.1
 wrapt==1.12.1
 zipp==3.4.0
