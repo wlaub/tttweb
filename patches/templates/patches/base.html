@@ -1,4 +1,4 @@
-{% load static tttcms_tags licensing_tags%}
+{% load static tttcms_tags licensing_tags thumbnail %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,7 +8,7 @@
     {% if patchentry %}
     <meta property="og:title" content="{{patchentry.name}}" />
     <meta property="og:description" content="{{patchentry.desc}}" />
-    <meta property="og:image" content="{{patchentry.images.all.first.image.url}}" />
+    <meta property="og:image" content="{{patchentry.images.all.first.image|thumbnail_url:'audio_file'}}" />
     {% endif %}
 
     <!-- Bootstrap CSS -->
