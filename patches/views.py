@@ -259,8 +259,8 @@ class DetailView(generic.DetailView):
         answers_a = list(answers.filter(entryA=entry))
         answers_b = answers.filter(entryB=entry)
         for b in answers_b:
+            complement = False
             for a in answers_a:
-                complement = False
                 if b.entryA == a.entryB:
                     complement=True
             if not complement:
