@@ -1,3 +1,5 @@
+import os
+
 import hashlib
 import datetime
 import mimetypes
@@ -72,11 +74,24 @@ class PatchEntryAPIVS(APIDryRun, viewsets.ModelViewSet):
     def get_queryset(self):
         q = super().get_queryset()
         names = self.request.GET.getlist('names', None)
+        filenames = self.request.GET.getlist('filenames', None)
+
         result = q
         if names:
-            result = q.none()
+            tresult = q.none()
             for name in names:
-                result|=q.filter(name__iexact=name)
+                tresult |= q.filter(name__iexact=name)
+            result &= tresult
+        if filenames:
+            tresult = q.none()
+            for name in filenames:
+                r = q.filter(recording__contains=name)
+                for entry in r.all():
+                    if os.path.basename(entry.recording.name) == name:
+                        tresult|=q.filter(id = entry.id)
+                
+            result &= tresult
+
 
         return result
 
