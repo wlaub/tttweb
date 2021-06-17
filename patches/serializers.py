@@ -88,7 +88,10 @@ class PatchEntrySerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(f'files {bad_files} conflict with existing file checksums')
         return data
 
-
+    def to_representation(self, instance):
+        res = super().to_representation(instance)
+        res['absolute_url'] = self.context['request'].build_absolute_uri(instance.get_absolute_url())
+        return res
 
     def create(self, validated_data):
         extra_images = validated_data.pop('extra_images', [])
