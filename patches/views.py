@@ -69,6 +69,19 @@ class PatchEntryAPIVS(APIDryRun, viewsets.ModelViewSet):
     serializer_class = PatchEntrySerializer
     permission_classes=[IsAuthorOrReadOnly]
 
+    def get_queryset(self):
+        q = super().get_queryset()
+        names = self.request.GET.getlist('names', None)
+        result = q
+        if names:
+            result = q.none()
+            for name in names:
+                result|=q.filter(name__iexact=name)
+
+        return result
+
+       
+
 class PatchAuthorAPIVS(APIDryRun, viewsets.ReadOnlyModelViewSet):
     queryset = PatchAuthorName.objects.all()
     serializer_class = PatchAuthorSerializer
