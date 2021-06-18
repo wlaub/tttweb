@@ -62,11 +62,11 @@ class TTTAPI():
 
     def get_name(self, name):
         r = self.get('entries', params={'names': [name]})
-        return r.json()
+        return r.json()['results']
 
     def get_recording_name(self, name):
         r = self.get('entries', params={'filenames': [name]})
-        return r.json()
+        return r.json()['results']
 
     def get_files(self, target, filenames):
         """
