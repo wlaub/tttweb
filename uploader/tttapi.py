@@ -99,17 +99,15 @@ class TTTAPI():
         return found_files, missing_files
  
 
-    def get_tags(self, tags= None):
+    def get_tags(self, tags):
         """
         Find all existing tags matching the names in tags
         Return found_tags, missing_tags
         found_tags = list of tag dictionaries
         missing_tags = list of tab names not found
         """
-        if tags == None:
-            tags = self.data['tags']
         r = self.get('tags', params = {'name': tags})
-        found_tags = r.json()
+        found_tags = r.json()['results']
         found_names = list(map(lambda x: x['name'].lower(), found_tags))
         missing_tags = []
         for tag in tags:
@@ -147,8 +145,19 @@ class TTTAPI():
         return fixed_tags
         """
 
+    def create_tags(self, tags, dry=False):
+        """
+        Given a list of tags of the form {"name", "description"}, create these
+        tags on the server. Return a list of the server responses.
+        """
 
+        results = []        
+        for tag in tags:
+            r = self.post('tags', dry=dry, data = tag)
+            obj = r.json()
+            results.append([r.status_code, obj])
 
+        return results
 
 
 
