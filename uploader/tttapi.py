@@ -32,6 +32,19 @@ class TTTAPI():
 
     """
 
+    licenses = {
+        1: 'All Rights Reserved',
+        2: 'CC BY-NC-ND',
+        3: 'CC BY-NC-SA',
+        4: 'CC BY-ND',
+        5: 'CC BY-NC',
+        6: 'CC BY-SA',
+        7: 'CC BY',
+        8: 'Public Domain',
+        }
+
+    licenses_reverse = {v:k for k,v in licenses.items()}
+
     def url(self, name):
         result = urljoin(self.base_url,'api', name)+'/'
         return result
