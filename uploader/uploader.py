@@ -8,8 +8,7 @@ import requests
 import json
 import pprint
 
-sys.path.append('../')
-from patches.utils import generate_checksum
+from ..patches.utils import generate_checksum
 
 from django.core import files
 
@@ -100,7 +99,7 @@ class Uploader():
         print('Dry run finished.') 
         print('*'*60)
 
-    def upload(self):
+    def upload(self, dry=False):
         """
         Do upload of self
         """
@@ -153,9 +152,10 @@ class Uploader():
       
         print('Uploading Data:')
         print(valid_data) 
-        r = self.post('entries', dry=False, data=valid_data, files=valid_files)
+        r = self.post('entries', dry=dry, data=valid_data, files=valid_files)
         print('\nResponse Received:')
         print(r.text.replace('\n', ' '))
+        return r
 
 
     def get_files(self, target, filenames):
@@ -174,7 +174,7 @@ class Uploader():
                 hashmap[checksum] = filename
         hashes = list(hashmap.keys())
         r = self.get(target, params={'checksums':hashes})
-        found_files = r.json()
+        found_files = r.json()['results']
         found_names =list(map(lambda x: hashmap[x['checksum']], found_files))
         missing_files = []
         for filename in filenames:
@@ -199,7 +199,7 @@ class Uploader():
         if tags == None:
             tags = self.data['tags']
         r = self.get('tags', params = {'name': tags})
-        found_tags = r.json()
+        found_tags = r.json()['results']
         found_names = list(map(lambda x: x['name'].lower(), found_tags))
         missing_tags = []
         for tag in tags:

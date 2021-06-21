@@ -101,6 +101,21 @@ class PatchAuthorAPIVS(APIDryRun, viewsets.ReadOnlyModelViewSet):
     queryset = PatchAuthorName.objects.all()
     serializer_class = PatchAuthorSerializer
 
+    def get_queryset(self):
+        q = super().get_queryset()
+        names = self.request.GET.getlist('display_names', None)
+
+        result = q
+        if names:
+            tresult = q.none()
+            for name in names:
+                tresult |= q.filter(display_name__iexact=name)
+            result &= tresult
+
+        return result
+
+
+
 class ChecksumFilter:
      def get_queryset(self):
         q = super().get_queryset()

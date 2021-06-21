@@ -97,7 +97,23 @@ class TTTAPI():
         print('-'*80)
 
         return found_files, missing_files
- 
+
+
+    def get_authors(self, auths):
+        """
+        find authors matching the given list of display names
+        """
+        r = self.get('authors', params = {'display_name': auths})
+        found_auths = r.json()['results']
+        found_names = list(map(lambda x: x['display_name'], found_auths))
+        missing_auths = []
+        for auth in auths:
+            if not auth in found_names:
+                missing_auths.append(auth)
+        return found_auths, missing_auths
+
+
+
 
     def get_tags(self, tags):
         """
@@ -114,6 +130,7 @@ class TTTAPI():
             if not tag.lower() in found_names:
                 missing_tags.append(tag)
         return found_tags, missing_tags
+
 
     def handle_missing_tags(self, tags):
         """
