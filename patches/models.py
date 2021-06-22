@@ -192,7 +192,7 @@ class PatchRepoAttachment(models.Model):
     A file in a repository at a specific commit, 0 or more
     """
     entry = models.ForeignKey(PatchEntry, on_delete=models.CASCADE, related_name='repo_attachments')
-    repo = models.URLField()
+    repo = models.TextField()
     commit = models.TextField()
     filename = models.TextField()
 

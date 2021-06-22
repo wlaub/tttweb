@@ -90,7 +90,10 @@ class PatchEntrySerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         res = super().to_representation(instance)
-        res['absolute_url'] = self.context['request'].build_absolute_uri(instance.get_absolute_url())
+        try:
+            res['absolute_url'] = self.context['request'].build_absolute_uri(instance.get_absolute_url())
+        except AttributeError:
+            res['absolute_url'] = 'Failed to build url'
         return res
 
     def create(self, validated_data):

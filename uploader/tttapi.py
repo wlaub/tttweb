@@ -78,6 +78,7 @@ class TTTAPI():
         return r.json()['results']
 
     def get_recording_name(self, name):
+        name = os.path.basename(name)
         r = self.get('entries', params={'filenames': [name]})
         return r.json()['results']
 
