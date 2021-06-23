@@ -196,6 +196,17 @@ class PatchRepoAttachment(models.Model):
     commit = models.TextField()
     filename = models.TextField()
 
+    def get_file_tag(self):
+        fmt = f'<a href = "{{}}">{self.filename}</a>'
+        if 'github.com' in self.repo:
+            _, name = self.repo.split('github.com')
+            name = name.replace('.git','')
+            name = name.strip(':/')
+            link = f'https://github.com/{name}/blob/{self.commit}/{self.filename}'
+            return fmt.format(link)
+
+        return self.filename
+
 ##
 ## Comparison Models
 ##

@@ -112,16 +112,29 @@ href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' tags=tag
         </ul>
 
         <h3>Associated Repositories</h3>
-        <ul>
         {% if entry.repo_attachments.all%}
+            <table>
+            <thead>
+                <tr>
+                    <th>Remote</th>
+                    <th>File</th>
+                    <th>Commit/Tag</th>
+                </tr>
+            </thead>
 
+            <tbody>
             {% for attach in entry.repo_attachments.all %}
-            <li>{{attach.filename}}<br></li>
+            <tr>
+                <td>{{attach.repo}}</td>
+                <td>{{attach.get_file_tag|safe}}</td>
+                <td>{{attach.commit}}</td>
+            </tr>
             {% endfor %}
+            </tbody>
+            </table>
         {% else %}
             No Associated Repositories
         {% endif %}
-        </ul>
 
 
 
