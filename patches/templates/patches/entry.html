@@ -116,8 +116,8 @@ href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' tags=tag
             <table>
             <thead>
                 <tr>
-                    <th>Remote</th>
                     <th>File</th>
+                    <th>Remote</th>
                     <th>Commit/Tag</th>
                 </tr>
             </thead>
@@ -125,8 +125,8 @@ href="{% url 'patches:index' %}{% format_querystring request.GET 'tags' tags=tag
             <tbody>
             {% for attach in entry.repo_attachments.all %}
             <tr>
-                <td>{{attach.repo}}</td>
                 <td>{{attach.get_file_tag|safe}}</td>
+                <td>{{attach.repo}}</td>
                 <td>{{attach.commit}}</td>
             </tr>
             {% endfor %}
