@@ -19,6 +19,7 @@ from django.utils.feedgenerator import Enclosure, Rss201rev2Feed
 from django.db.models import Q
 
 from tttweb.templatetags import tttcms_tags 
+from tttweb import secret_configs
 from .models import PatchEntry, PatchAuthorName, BinaryQuestion, PatchTag
 from . import models
 
@@ -355,12 +356,28 @@ class CompareView(generic.ListView):
         else:
             return None
 
-    def post(self, request, *args, **kwargs):
-        origin_id = request.META.get('REMOTE_ADDR')
-        
+    def get_origin(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            origin_id = x_forwarded_for.split(',')[-1].strip()
+        else:
+            origin_id = request.META.get('REMOTE_ADDR')
+
+        salt = secret_configs.ORIGIN_SALT
+        assert len(salt) > 0
+        origin_id += salt
+
         md5 = hashlib.md5()
         md5.update(bytes(origin_id, encoding='ascii'))
         origin_hash = md5.hexdigest()
+
+
+        return origin_hash
+       
+
+    def post(self, request, *args, **kwargs):
+
+        origin_hash = self.get_origin(request)
 
         if request.POST['answer'][0] not in ['a','b']:
             messages.add_message(request, messages.INFO, 
