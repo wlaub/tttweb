@@ -1,3 +1,5 @@
+
+
 <div style="display:inline-block;" >
 <h1>
 {%if choice == 'index'%}<span class="headersel"></span>{%endif%}<!--
@@ -11,13 +13,27 @@
 </h1>
 </div>
 
-<div style="float:right;position:relative; bottom:-1.5em;">
+{% if choice == 'index' %}
+<div style="float:right;position:relative; bottom:-.25em;">
+<div>
 {% if rss_feed %}
-<a href = "{% url rss_feed %}" style="">RSS</a>
+    {% if request.GET.urlencode %}
+    <a href = "{% url rss_feed %}?{{request.GET.urlencode}}" style="">Page RSS</a>
+    {% else %}
+    <a href = "{% url rss_feed %}" style="">Site RSS</a>
+    {% endif %}
 {% endif %}
 
 <div class="custom-control custom-switch autoplay-wrapper hide-autoplay" id="autoplaydiv">
     <input type = "checkbox" class="custom-control-input" id="autoplayswitch">
     <label class="custom-control-label" for="autoplayswitch">Autoplay</label>
 </div>
+
 </div>
+
+<div>
+Page Duration: {{duration}}
+</div>
+
+</div>
+{% endif %}

@@ -225,6 +225,14 @@ class IndexView(generic.ListView):
 
         context['filter_form'] = FilterForm()
 
+        duration = datetime.timedelta()
+        for x in context['patch_entries']:
+            duration += x.meta.duration
+
+        duration -= datetime.timedelta(microseconds=duration.microseconds)
+
+        context['duration'] = duration
+
 #        messages.add_message(self.request, messages.INFO, tttcms_tags.format_querystring(self.request.GET))
         return context
 
