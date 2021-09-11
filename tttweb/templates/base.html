@@ -47,6 +47,69 @@
         .child.descendant a:link{color: white;}
         .child.descendant a:visited{color:white;}
 
+        .menu_hide{
+            display: none;
+        }
+        .menu_show{
+            display:block;
+        }
+        /*.nav li:hover > ul{display:block;}*/
+        .expando {
+            cursor: pointer;
+            user-select: none;
+        }
+        .expando-expanded::before{
+            transform:rotate(90deg);
+        }
+        .expando::before {
+            content: "\25B6";
+            color: white;
+            display: inline-block;
+            margin-right: 1px;
+            font-size: 0.75em;
+            width:1em
+        }
+        .nospando::before{
+            visibility: hidden;
+        }
+ 
+
+        /*For white background menus*/
+        .nav-inv {
+            padding-left: 0;
+        }
+        .nav-inv li {
+            display: block;
+            list-style-type: none;
+            padding-right: 0px;
+        }
+        .nav-inv ul{
+            padding-left:1em;
+            }
+        .nav-inv a:link{
+            color: black;
+            text-decoration:none;
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
+            padding-left: 2px;
+            margin-right: 1em;
+        }
+        .nav-inv a:visited{color: black;}    
+        .nav-inv .menu_show .child.selected a:link{color: #ff00ff;}
+        .nav-inv .menu_show .child.selected a:visited{color:#ff00ff;}    
+        .nav-inv .menu_show .child.descendant a:link{color: black;}
+        .nav-inv .menu_show .child.descendant a:visited{color:black;}
+        .nav-inv .expando::before {
+            content: "\25B6";
+            color: black;
+            display: inline-block;
+            margin-right: 1px;
+            font-size: 0.75em;
+            width:1em
+        }
+ 
+
+
         a {
         color: #ff00ff;
         }
@@ -133,6 +196,25 @@
 
         }
 
+        /* toc stuff*/
+        .container h6 a,
+        .container h5 a, 
+        .container h4 a,
+        .container h3 a,
+        .container h2 a,
+        .container h1 a {
+            color: black;
+            text-decoration: none;
+            }
+
+        .toc-list {
+            list-style-type: none;
+            margin:0;
+            padding-left: 0;
+        }
+        .toc-list li ol{
+            padding-left: 1em;
+        }
 
 
         body {
@@ -140,31 +222,6 @@
         }
 
 
-        .menu_hide{
-            display: none;
-        }
-        .menu_show{
-            display:block;
-        }
-        /*.nav li:hover > ul{display:block;}*/
-        .expando {
-            cursor: pointer;
-            user-select: none;
-        }
-        .expando-expanded::before{
-            transform:rotate(90deg);
-        }
-        .expando::before {
-            content: "\25B6";
-            color: white;
-            display: inline-block;
-            margin-right: 1px;
-            font-size: 0.75em;
-            width:1em
-        }
-        .nospando::before{
-            visibility: hidden;
-        }
         </style>
         {% render_block "css" %}
     </head>
@@ -204,5 +261,42 @@
         </div>
     </div>
         {% render_block "js" %}
+
+    <script>
+        //I'd rather do this server-side, but idk if it's practical to do so
+        var maindiv = document.getElementsByClassName('content')[0];
+        var toc_ids = [];
+
+        for(tagname of ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
+        {
+            var tags = maindiv.getElementsByTagName(tagname);
+            for(tag of tags)
+            {
+                var tagid = tag.innerText;
+                tagid = tagid.replaceAll(' ','-');
+                tagid = tagid.replaceAll(/[^0-9a-zA-Z_-]/g,'');
+                tagid = tagid.toLowerCase();
+                var tagfinal = tagid;
+                var dupidx = 0;
+                while(toc_ids.includes(tagfinal))
+                {
+                    ++dupidx;
+                    tagfinal = tagid+'-'+dupidx;
+                }
+                toc_ids.push(tagfinal);
+
+                tag.id=tagfinal;
+                tag.innerHTML = '<a href="#'+tagfinal+'">'+tag.innerHTML+'</a>';
+            }
+        }
+
+        tocbot.init({
+            tocSelector:'.tocbot-placeholder', 
+            contentSelector:'.content',
+            headingSelector: 'h1, h2, h3',
+            });
+    </script>
+
+
     </body>
 </html>

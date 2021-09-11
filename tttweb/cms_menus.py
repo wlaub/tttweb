@@ -11,3 +11,4 @@ class MenuModifier(Modifier):
         return nodes
 
 menu_pool.register_modifier(MenuModifier)
+
