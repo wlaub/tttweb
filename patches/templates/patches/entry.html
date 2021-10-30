@@ -3,18 +3,20 @@
 
 <div class="container-fluid entry accordion" id="accordion-{{entry.id}}" {% if collapse %}data-toggle="collapse" data-target="#collapse-{{entry.id}}" {%endif%}>
 
-    <div class="row" style="margin-left:0;margin-right:0">
+    <div class="row entry-row">
 
         {% if not hide_image %}
+        <div class = "col thumbnail-wrapper">
         <a href = "{{entry.images.all.first.image.url}}">
             <img src = "{{entry.images.all.first.image|thumbnail_url:'audio_file'}}" class="adaptive-thumbnail">
             </a>
+        </div>
         {% endif %}  
 
-        <div class = "col" style="overflow:hidden;">
+        <div class = "col entry-info"">
 
             {%if not hide_info%}
-            <div class = "row" style="flex-wrap:nowrap;">
+            <div class = "row entry-title-row">
             <h3 style="overflow:visible;">
                  <a href = {% url 'patches:detail' entry.id %}>               
                 {{entry.name}}
@@ -29,7 +31,6 @@
                     <i class="openwebicon" title="{{entry.license.name}}">{{entry.license.symbols}}</i>
                 </h3>
             </div>
-
 
             </div>
 

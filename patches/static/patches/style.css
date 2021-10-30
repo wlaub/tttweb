@@ -170,6 +170,40 @@ border-right: 1px solid black;
 	display:flex;
 	flex-direction:row;
 }
+
+.entry-row{
+margin-left: 0;
+margin-right: 0;
+}
+.entry-info{
+overflow-x: hidden;
+}
+.entry-title-row{
+flex-wrap: nowrap;
+}
+
+@media (max-width: 420px){
+    .entry-row{
+    flex-direction: column;
+    }
+    .entry-info{
+    overflow-x: hidden;
+    flex-basis: content;
+    }
+    .entry-title-row{
+    flex-wrap: wrap;
+    }
+
+
+
+}
+
+.thumbnail-wrapper {
+    padding-left: 0px;
+    padding-right: 0px;
+    flex-grow: 0;
+}
+
 .thumbnail {
 	height: 128px;
 	width: 128px;
