@@ -44,7 +44,7 @@ pprintpp==0.4.0
 python-dateutil==2.8.1
 pytz==2019.1
 pytzdata==2020.1
-requests==2.25.1
+requests==2.31.0
 six==1.12.0
 sqlparse==0.3.0
 tbm-utils==2.6.0
